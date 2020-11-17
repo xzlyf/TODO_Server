@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: xz
+Build-Jdk: 12.0.1
+Implementation-Title: todolist
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.xz.app
+Main-Class: ${start-class}
+
