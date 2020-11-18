@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * user 控制层
+ */
 @RestController
 @RequestMapping("/user")
-public class User {
+public class UserController {
 
 
     @RequestMapping("/now")
