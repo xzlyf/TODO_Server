@@ -1,9 +1,16 @@
 package com.xz.app.todolist.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class ApiResult {
     private int code;
     private String status;
+    //如果没有数据传入，则过滤掉此输出
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Object data;
+
+    //如果没有数据传入，则过滤掉此输出
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String message;
 
     public ApiResult() {
@@ -13,6 +20,12 @@ public class ApiResult {
         this.code = code;
         this.status = status;
         this.data = data;
+    }
+
+    public ApiResult(int code, String status, String message) {
+        this.code = code;
+        this.status = status;
+        this.message = message;
     }
 
     public ApiResult(int code, String status, Object data, String message) {

@@ -9,12 +9,11 @@ import org.springframework.data.repository.query.Param;
 /**
  * user 表操作
  */
-public interface UserRepositoty extends JpaRepository<UserController, Long> {
+public interface UserRepository extends JpaRepository<UserDo, Long> {
 
     /*
      * 根据用户名查询
      * */
-    @Query("select t from User t where t.name = :name")
-    UserDo findByUserName(@Param("name") String name);
+    UserDo findByUserNo(long userNo);
 
 }
