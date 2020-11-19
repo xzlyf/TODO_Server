@@ -3,6 +3,7 @@ package com.xz.app.todolist.controller;
 import com.xz.app.todolist.domain.UserDo;
 import com.xz.app.todolist.dto.ApiResult;
 import com.xz.app.todolist.service.UserService;
+import com.xz.app.todolist.utils.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,9 +22,9 @@ public class UserController {
     @RequestMapping("/now")
     public Object getNow(String user) {
         if (user == null) {
-            return new ApiResult(0, "success", System.currentTimeMillis());
+            return new ApiResult(StatusEnum.SUCCESS, System.currentTimeMillis());
         } else {
-            return new ApiResult(0, "success", System.currentTimeMillis(), "Hello:" + user);
+            return new ApiResult(StatusEnum.SUCCESS, System.currentTimeMillis(), "Hello:" + user);
         }
     }
 
@@ -31,9 +32,9 @@ public class UserController {
     public Object getUser(@RequestParam("userno") long userno) {
         UserDo userDo = userService.findByUserNo(userno);
         if (userDo == null) {
-            return new ApiResult(1,"fail","用户不存在");
+            return new ApiResult(StatusEnum.NULL_USER, null);
         } else {
-            return new ApiResult(0,"success",userDo);
+            return new ApiResult(StatusEnum.SUCCESS, userDo);
         }
     }
 

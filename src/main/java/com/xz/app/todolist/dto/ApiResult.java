@@ -1,6 +1,7 @@
 package com.xz.app.todolist.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.xz.app.todolist.utils.StatusEnum;
 
 public class ApiResult {
     private int code;
@@ -16,21 +17,17 @@ public class ApiResult {
     public ApiResult() {
     }
 
-    public ApiResult(int code, String status, Object data) {
-        this.code = code;
-        this.status = status;
+
+    public ApiResult(StatusEnum status, Object data) {
+        this.code = status.getCode();
+        this.status = status.getMsg();
         this.data = data;
     }
 
-    public ApiResult(int code, String status, String message) {
-        this.code = code;
-        this.status = status;
-        this.message = message;
-    }
 
-    public ApiResult(int code, String status, Object data, String message) {
-        this.code = code;
-        this.status = status;
+    public ApiResult(StatusEnum status, Object data, String message) {
+        this.code = status.getCode();
+        this.status = status.getMsg();
         this.data = data;
         this.message = message;
     }
