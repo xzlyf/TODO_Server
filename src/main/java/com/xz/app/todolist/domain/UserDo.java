@@ -1,5 +1,6 @@
 package com.xz.app.todolist.domain;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Synchronize;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
@@ -12,21 +13,25 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user")
 public class UserDo {
+    /**
+     * 主键自动生成uuid
+     */
     @Id
-    @GeneratedValue
+    @GenericGenerator(name="system-uuid", strategy="uuid") //这个是hibernate的注解/生成32位UUID
+    @GeneratedValue(generator="system-uuid")
     @Column(name = "uuid", length = 32)
     private String uuid;
 
-    @Column(name = "user_no",length = 16)
-    private long userNo;
+    @Column(name = "user_no", length = 16)
+    private String userNo;
 
-    @Column(name = "user_name",length = 32)
+    @Column(name = "user_name", length = 32)
     private String userName;
 
-    @Column(name = "user_pwd",length = 32)
+    @Column(name = "user_pwd", length = 32)
     private String userPwd;
 
-    @Column(name = "user_phone",length = 16)
+    @Column(name = "user_phone", length = 16)
     private String userPhone;
 
     public String getUuid() {
@@ -37,11 +42,11 @@ public class UserDo {
         this.uuid = uuid;
     }
 
-    public long getUserNo() {
+    public String getUserNo() {
         return userNo;
     }
 
-    public void setUserNo(long userNo) {
+    public void setUserNo(String userNo) {
         this.userNo = userNo;
     }
 
