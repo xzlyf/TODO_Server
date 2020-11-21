@@ -3,6 +3,9 @@ package com.xz.app.todolist.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xz.app.todolist.utils.StatusEnum;
 
+/**
+ * 通用实体数据返回
+ */
 public class ApiResult {
     private int code;
     private String status;

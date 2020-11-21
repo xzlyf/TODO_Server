@@ -1,7 +1,8 @@
 package com.xz.app.todolist.controller;
 
-import com.xz.app.todolist.domain.UserDo;
+import com.xz.app.todolist.domain.User;
 import com.xz.app.todolist.dto.ApiResult;
+import com.xz.app.todolist.dto.PagingResult;
 import com.xz.app.todolist.service.ToDoListAppService;
 import com.xz.app.todolist.utils.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,25 +43,27 @@ public class ToDoListAppController {
      */
     @RequestMapping("")
     public Object getUser(@RequestParam("userno") String userNo) {
-        UserDo userDo = toDoListAppService.findUserNo(userNo);
-        if (userDo == null) {
+        User user = toDoListAppService.findUserNo(userNo);
+        if (user == null) {
             return new ApiResult(StatusEnum.NULL_USER, null);
         } else {
-            return new ApiResult(StatusEnum.SUCCESS, userDo);
+            return new ApiResult(StatusEnum.SUCCESS, user);
         }
     }
+
     /**
      * 以用户名查询是否存在用户
+     *
      * @param userName
      * @return
      */
     @RequestMapping(value = "", params = {"username"})
     public Object checkUserName(@RequestParam(value = "username") String userName) {
-        UserDo userDo = toDoListAppService.finUserName(userName);
-        if (userDo == null) {
+        User user = toDoListAppService.finUserName(userName);
+        if (user == null) {
             return new ApiResult(StatusEnum.NULL_USER, null);
         } else {
-            return new ApiResult(StatusEnum.SUCCESS, userDo);
+            return new ApiResult(StatusEnum.SUCCESS, user);
         }
     }
 
@@ -70,9 +73,14 @@ public class ToDoListAppController {
      * @return
      */
     @RequestMapping("/getAllUser")
-    public Object getAllUser() {
-        return new ApiResult(StatusEnum.SUCCESS, toDoListAppService.findUserNo());
+    public Object getAllUser(Integer page, Integer size) {
+        if (page == null || size == null) {
+            return new ApiResult(StatusEnum.SUCCESS, toDoListAppService.findAll());
+        } else {
+            return new PagingResult<>(StatusEnum.SUCCESS, toDoListAppService.getAllUserByOnlyPage(page, size));
+        }
     }
+
 
     /**
      * 新增用户
@@ -82,19 +90,17 @@ public class ToDoListAppController {
      * @param phone
      * @return
      */
-    @RequestMapping(value = "/addUser",params = {"username","password","phone"})
+    @RequestMapping(value = "/addUser", params = {"username", "password", "phone"})
     public Object addUser(@RequestParam(value = "username") String name
             , @RequestParam(value = "password") String password
             , @RequestParam(value = "phone") String phone) {
-        UserDo userDo = toDoListAppService.addUser(name, password, phone);
-        if (userDo == null) {
+        User user = toDoListAppService.addUser(name, password, phone);
+        if (user == null) {
             return new ApiResult(StatusEnum.FAILED_USER_ADD, null);
         } else {
-            return new ApiResult(StatusEnum.SUCCESS, userDo);
+            return new ApiResult(StatusEnum.SUCCESS, user);
         }
     }
-
-
 
 
 }

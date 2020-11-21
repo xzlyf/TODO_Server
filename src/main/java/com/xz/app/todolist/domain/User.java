@@ -3,10 +3,17 @@ package com.xz.app.todolist.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Synchronize;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * 用户实体类
@@ -14,14 +21,15 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "user")
-public class UserDo implements Serializable  {
+@EntityListeners(AuditingEntityListener.class)
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 主键自动生成uuid
      */
     @Id
-    @GenericGenerator(name="system-uuid", strategy="uuid") //这个是hibernate的注解/生成32位UUID
-    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid") //这个是hibernate的注解/生成32位UUID
+    @GeneratedValue(generator = "system-uuid")
     @JsonIgnore//作用：在实体类向前台返回数据时用来忽略不想传递给前台的属性或接口。
     @Column(name = "uuid", length = 32)
     private String uuid;
@@ -38,6 +46,13 @@ public class UserDo implements Serializable  {
 
     @Column(name = "user_phone", length = 16)
     private String userPhone;
+
+    @CreatedDate
+    private Date createTime;
+
+    @LastModifiedDate
+    private Date updateTime;
+
 
     public String getUuid() {
         return uuid;
@@ -77,5 +92,21 @@ public class UserDo implements Serializable  {
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

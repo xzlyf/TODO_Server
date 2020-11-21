@@ -1,9 +1,10 @@
 package com.xz.app.todolist.service;
 
-import com.xz.app.todolist.domain.UserDo;
 import com.xz.app.todolist.dao.UserRepository;
+import com.xz.app.todolist.domain.User;
 import com.xz.app.todolist.utils.AccountGenerate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +15,15 @@ import java.util.List;
 @Service
 public class ToDoListAppService {
     @Autowired
-    UserRepository userRepository;
+    UserRepository UserDao;
 
     /**
      * 根据账号查询用户信息
      */
-    public UserDo findUserNo(String userNo) {
-        UserDo user = null;
+    public User findUserNo(String userNo) {
+        User user = null;
         try {
-            user = userRepository.findByUserNo(userNo);
+            user = UserDao.findByUserNo(userNo);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,10 +36,10 @@ public class ToDoListAppService {
      * @param userName
      * @return
      */
-    public UserDo finUserName(String userName) {
-        UserDo user = null;
+    public User finUserName(String userName) {
+        User user = null;
         try {
-            user = userRepository.findByUserName(userName);
+            user = UserDao.findByUserName(userName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,10 +50,10 @@ public class ToDoListAppService {
     /**
      * 查询表里所有用户
      */
-    public List<UserDo> findUserNo() {
-        List<UserDo> allList = null;
+    public List<User> findAll() {
+        List<User> allList = null;
         try {
-            allList = userRepository.findAll();
+            allList = UserDao.findAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,23 +62,35 @@ public class ToDoListAppService {
     }
 
     /**
+     * 分页查询
+     * @param page
+     * @param size
+     * @return
+     */
+    public Page<User> getAllUserByOnlyPage(Integer page, Integer size) {
+        Sort sort = Sort.by(Sort.Order.desc("createTime"));//根据createTime字段降序排列
+        Pageable pageable = PageRequest.of(page-1, size, sort);
+        return UserDao.findAll(pageable);
+    }
+
+    /**
      * 保存为新的用户
      */
-    public UserDo addUser(String name, String password, String phone) {
-        UserDo userDo = new UserDo();
-        userDo.setUserName(name);
-        userDo.setUserPwd(password);
-        userDo.setUserPhone(phone);
+    public User addUser(String name, String password, String phone) {
+        User user = new User();
+        user.setUserName(name);
+        user.setUserPwd(password);
+        user.setUserPhone(phone);
         //生成账号，并查询数据库是否存在此账号，如果存在则重新生成账号
         String tempAccount;
-        UserDo checkAgain;
+        User checkAgain;
         do {
             tempAccount = AccountGenerate.makeAccount(8);
             checkAgain = findUserNo(tempAccount);
         } while (checkAgain != null);
-        userDo.setUserNo(tempAccount);
+        user.setUserNo(tempAccount);
         try {
-            return userRepository.save(userDo);
+            return UserDao.save(user);
         } catch (Exception e) {
             //数据插入失败，可能存在相同项
             System.out.println("=========error==========:" + e.getMessage());
