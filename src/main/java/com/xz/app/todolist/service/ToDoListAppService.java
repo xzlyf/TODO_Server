@@ -4,6 +4,8 @@ import com.xz.app.todolist.domain.UserDo;
 import com.xz.app.todolist.repository.UserRepository;
 import com.xz.app.todolist.utils.AccountGenerate;
 import com.xz.app.todolist.utils.UUIDUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,15 +22,16 @@ public class ToDoListAppService {
     /**
      * 根据账号查询用户信息
      */
-    public UserDo findUser(String userNo) {
+    public UserDo findUser(String userNoOrName) {
         UserDo user = null;
         try {
-            user = userRepository.findByUserNo(userNo);
+            user = userRepository.findByUserNo(userNoOrName);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return user;
     }
+
 
     /**
      * 查询表里所有用户
@@ -60,6 +63,12 @@ public class ToDoListAppService {
             checkAgain = findUser(tempAccount);
         } while (checkAgain != null);
         userDo.setUserNo(tempAccount);
-        return userRepository.save(userDo);
+        try {
+            return userRepository.save(userDo);
+        } catch (Exception e) {
+            //数据插入失败，可能存在相同项
+            System.out.println("=========error==========:"+e.getMessage());
+        }
+        return null;
     }
 }
