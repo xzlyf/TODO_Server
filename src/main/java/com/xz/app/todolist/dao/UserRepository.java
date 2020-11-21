@@ -1,8 +1,8 @@
-package com.xz.app.todolist.repository;
+package com.xz.app.todolist.dao;
 
 import com.xz.app.todolist.domain.UserDo;
-import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -12,12 +12,22 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<UserDo, Long> {
 
     /**
-     * 根据用户账号或者用户名查询
+     * 根据用户账号查询
+     * <p>
+     * <p>
+     * 相当于    @Query(value = "select t from UserDo t where t.userNo = ?1")
      *
-     * @param userNoOrName
+     * @param userNo
      * @return
      */
-    UserDo findByUserNo(String userNoOrName);
+    UserDo findByUserNo(String userNo);
+
+    /**
+     * 更具用户名查询
+     * @param userName
+     * @return
+     */
+    UserDo findByUserName(String userName);
 
 
     /**

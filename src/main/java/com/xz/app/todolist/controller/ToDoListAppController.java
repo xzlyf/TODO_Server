@@ -37,12 +37,26 @@ public class ToDoListAppController {
     /**
      * 根据账号查询用户信息
      *
-     * @param userNoOrName
+     * @param userNo
      * @return
      */
     @RequestMapping("")
-    public Object getUser(@RequestParam("userNoOrName") String userNoOrName) {
-        UserDo userDo = toDoListAppService.findUser(userNoOrName);
+    public Object getUser(@RequestParam("userno") String userNo) {
+        UserDo userDo = toDoListAppService.findUserNo(userNo);
+        if (userDo == null) {
+            return new ApiResult(StatusEnum.NULL_USER, null);
+        } else {
+            return new ApiResult(StatusEnum.SUCCESS, userDo);
+        }
+    }
+    /**
+     * 以用户名查询是否存在用户
+     * @param userName
+     * @return
+     */
+    @RequestMapping(value = "", params = {"username"})
+    public Object checkUserName(@RequestParam(value = "username") String userName) {
+        UserDo userDo = toDoListAppService.finUserName(userName);
         if (userDo == null) {
             return new ApiResult(StatusEnum.NULL_USER, null);
         } else {
@@ -57,7 +71,7 @@ public class ToDoListAppController {
      */
     @RequestMapping("/getAllUser")
     public Object getAllUser() {
-        return new ApiResult(StatusEnum.SUCCESS, toDoListAppService.findUser());
+        return new ApiResult(StatusEnum.SUCCESS, toDoListAppService.findUserNo());
     }
 
     /**
@@ -80,15 +94,7 @@ public class ToDoListAppController {
         }
     }
 
-    /**
-     * 以用户名查询是否存在用户
-     * @param name
-     * @return
-     */
-    @RequestMapping(value = "/addUser", params = {"username"})
-    public Object checkUserName(@RequestParam(value = "username") String name) {
-        return null;
-    }
+
 
 
 }

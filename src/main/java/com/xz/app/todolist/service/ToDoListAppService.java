@@ -1,11 +1,8 @@
 package com.xz.app.todolist.service;
 
 import com.xz.app.todolist.domain.UserDo;
-import com.xz.app.todolist.repository.UserRepository;
+import com.xz.app.todolist.dao.UserRepository;
 import com.xz.app.todolist.utils.AccountGenerate;
-import com.xz.app.todolist.utils.UUIDUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +19,26 @@ public class ToDoListAppService {
     /**
      * 根据账号查询用户信息
      */
-    public UserDo findUser(String userNoOrName) {
+    public UserDo findUserNo(String userNo) {
         UserDo user = null;
         try {
-            user = userRepository.findByUserNo(userNoOrName);
+            user = userRepository.findByUserNo(userNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    /**
+     * 根据用户名查询用户信息
+     *
+     * @param userName
+     * @return
+     */
+    public UserDo finUserName(String userName) {
+        UserDo user = null;
+        try {
+            user = userRepository.findByUserName(userName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,7 +49,7 @@ public class ToDoListAppService {
     /**
      * 查询表里所有用户
      */
-    public List<UserDo> findUser() {
+    public List<UserDo> findUserNo() {
         List<UserDo> allList = null;
         try {
             allList = userRepository.findAll();
@@ -60,14 +73,14 @@ public class ToDoListAppService {
         UserDo checkAgain;
         do {
             tempAccount = AccountGenerate.makeAccount(8);
-            checkAgain = findUser(tempAccount);
+            checkAgain = findUserNo(tempAccount);
         } while (checkAgain != null);
         userDo.setUserNo(tempAccount);
         try {
             return userRepository.save(userDo);
         } catch (Exception e) {
             //数据插入失败，可能存在相同项
-            System.out.println("=========error==========:"+e.getMessage());
+            System.out.println("=========error==========:" + e.getMessage());
         }
         return null;
     }
