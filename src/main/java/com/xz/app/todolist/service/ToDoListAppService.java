@@ -6,7 +6,9 @@ import com.xz.app.todolist.utils.AccountGenerate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +17,7 @@ import java.util.List;
 @Service
 public class ToDoListAppService {
     @Autowired
-    UserRepository UserDao;
+    UserRepository userRepo;
 
     /**
      * 根据账号查询用户信息
@@ -23,7 +25,7 @@ public class ToDoListAppService {
     public User findUserNo(String userNo) {
         User user = null;
         try {
-            user = UserDao.findByUserNo(userNo);
+            user = userRepo.findByUserNo(userNo);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +41,7 @@ public class ToDoListAppService {
     public User finUserName(String userName) {
         User user = null;
         try {
-            user = UserDao.findByUserName(userName);
+            user = userRepo.findByUserName(userName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,7 +55,7 @@ public class ToDoListAppService {
     public List<User> findAll() {
         List<User> allList = null;
         try {
-            allList = UserDao.findAll();
+            allList = userRepo.findAll();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +72,7 @@ public class ToDoListAppService {
     public Page<User> getAllUserByOnlyPage(Integer page, Integer size) {
         Sort sort = Sort.by(Sort.Order.desc("createTime"));//根据createTime字段降序排列
         Pageable pageable = PageRequest.of(page-1, size, sort);
-        return UserDao.findAll(pageable);
+        return userRepo.findAll(pageable);
     }
 
     /**
@@ -90,11 +92,17 @@ public class ToDoListAppService {
         } while (checkAgain != null);
         user.setUserNo(tempAccount);
         try {
-            return UserDao.save(user);
+            return userRepo.save(user);
         } catch (Exception e) {
             //数据插入失败，可能存在相同项
             System.out.println("=========error==========:" + e.getMessage());
         }
         return null;
+    }
+
+
+    @Transactional//开启事务，否则执行update/delete时将失败
+    public void alterUserName(String uuid,String newUserName){
+        userRepo.updateStateByUserName(uuid,newUserName,new Date(System.currentTimeMillis()));
     }
 }

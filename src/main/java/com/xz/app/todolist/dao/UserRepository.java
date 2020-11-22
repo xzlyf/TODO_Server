@@ -2,7 +2,10 @@ package com.xz.app.todolist.dao;
 
 import com.xz.app.todolist.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +26,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * 更具用户名查询
+     *
      * @param userName
      * @return
      */
@@ -44,4 +48,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return
      */
     User save(User user);
+
+    /**
+     * 更新表数据
+     */
+    @Modifying
+    @Query("update User t  set t.userName=?2,t.updateTime=?3 where t.uuid=?1")
+    void updateStateByUserName(String UUID, String newUserName, Date date);
+
+
 }

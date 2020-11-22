@@ -91,7 +91,7 @@ public class ToDoListAppController {
      * @return
      */
     @RequestMapping(value = "/addUser", params = {"username", "password", "phone"})
-    public Object addUser(@RequestParam(value = "username") String name
+    public Object createUser(@RequestParam(value = "username") String name
             , @RequestParam(value = "password") String password
             , @RequestParam(value = "phone") String phone) {
         User user = toDoListAppService.addUser(name, password, phone);
@@ -99,6 +99,17 @@ public class ToDoListAppController {
             return new ApiResult(StatusEnum.FAILED_USER_ADD, null);
         } else {
             return new ApiResult(StatusEnum.SUCCESS, user);
+        }
+    }
+
+    @RequestMapping(value = "/alterUserName")
+    public Object alterUserName(@RequestParam(value = "uuid") String UUID, @RequestParam(value = "name") String newUserName) {
+        try {
+            toDoListAppService.alterUserName(UUID, newUserName);
+            return new ApiResult(StatusEnum.SUCCESS, null);
+        } catch (Exception e) {
+            System.out.println("======error=======：" + e.getMessage());
+            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, null);
         }
     }
 
