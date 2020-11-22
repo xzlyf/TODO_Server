@@ -101,8 +101,23 @@ public class ToDoListAppService {
     }
 
 
+    /**
+     * 更新用户名
+     * @param uuid
+     * @param newUserName
+     */
     @Transactional//开启事务，否则执行update/delete时将失败
     public void alterUserName(String uuid,String newUserName){
         userRepo.updateStateByUserName(uuid,newUserName,new Date(System.currentTimeMillis()));
+    }
+
+    /**
+     * 更新密码
+     * @param uuid
+     * @param newUserPwd
+     */
+    @Transactional//开启事务，否则执行update/delete时将失败
+    public void alterUserPwd(String uuid,String newUserPwd){
+        userRepo.updateStateByUserPwd(uuid,newUserPwd,new Date(System.currentTimeMillis()));
     }
 }

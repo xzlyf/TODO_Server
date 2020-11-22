@@ -50,11 +50,19 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User save(User user);
 
     /**
-     * 更新表数据
+     * 更新表数据 by username
      */
     @Modifying
     @Query("update User t  set t.userName=?2,t.updateTime=?3 where t.uuid=?1")
     void updateStateByUserName(String UUID, String newUserName, Date date);
+
+
+    /**
+     * 更新表数据 by userPwd
+     */
+    @Modifying
+    @Query("update User t  set t.userPwd=?2,t.updateTime=?3 where t.uuid=?1")
+    void updateStateByUserPwd(String UUID, String userPwd, Date date);
 
 
 }

@@ -102,10 +102,33 @@ public class ToDoListAppController {
         }
     }
 
+    /**
+     * 修改用户名
+     * @param UUID
+     * @param newUserName
+     * @return
+     */
     @RequestMapping(value = "/alterUserName")
     public Object alterUserName(@RequestParam(value = "uuid") String UUID, @RequestParam(value = "name") String newUserName) {
         try {
             toDoListAppService.alterUserName(UUID, newUserName);
+            return new ApiResult(StatusEnum.SUCCESS, null);
+        } catch (Exception e) {
+            System.out.println("======error=======：" + e.getMessage());
+            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, null);
+        }
+    }
+
+    /**
+     * 修改用户密码
+     * @param UUID
+     * @param pwd
+     * @return
+     */
+    @RequestMapping(value = "/alterUserPwd")
+    public Object alterUserPwd(@RequestParam(value = "uuid") String UUID, @RequestParam(value = "pwd") String pwd) {
+        try {
+            toDoListAppService.alterUserPwd(UUID, pwd);
             return new ApiResult(StatusEnum.SUCCESS, null);
         } catch (Exception e) {
             System.out.println("======error=======：" + e.getMessage());
