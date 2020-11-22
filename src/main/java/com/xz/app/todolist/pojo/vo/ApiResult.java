@@ -1,4 +1,4 @@
-package com.xz.app.todolist.dto;
+package com.xz.app.todolist.pojo.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.xz.app.todolist.utils.StatusEnum;

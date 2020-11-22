@@ -1,4 +1,4 @@
-package com.xz.app.todolist.domain;
+package com.xz.app.todolist.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,6 +1,6 @@
-package com.xz.app.todolist.dao;
+package com.xz.app.todolist.repository;
 
-import com.xz.app.todolist.domain.User;
+import com.xz.app.todolist.pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

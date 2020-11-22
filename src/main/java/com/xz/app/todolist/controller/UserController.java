@@ -1,9 +1,9 @@
 package com.xz.app.todolist.controller;
 
-import com.xz.app.todolist.domain.User;
-import com.xz.app.todolist.dto.ApiResult;
-import com.xz.app.todolist.dto.PagingResult;
-import com.xz.app.todolist.service.ToDoListAppService;
+import com.xz.app.todolist.pojo.User;
+import com.xz.app.todolist.pojo.vo.ApiResult;
+import com.xz.app.todolist.pojo.vo.PagingResult;
+import com.xz.app.todolist.service.impl.UserServiceImpl;
 import com.xz.app.todolist.utils.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
  * user 控制层
  */
 @RestController
-@RequestMapping("/todolist")
-public class ToDoListAppController {
+@RequestMapping("/user")
+public class UserController {
 
     @Autowired
-    private ToDoListAppService toDoListAppService;
+    private UserServiceImpl userServiceImpl;
 
     /**
      * 获取当前服务器时间
@@ -43,7 +43,7 @@ public class ToDoListAppController {
      */
     @RequestMapping("")
     public Object getUser(@RequestParam("userno") String userNo) {
-        User user = toDoListAppService.findUserNo(userNo);
+        User user = userServiceImpl.findUserNo(userNo);
         if (user == null) {
             return new ApiResult(StatusEnum.NULL_USER, null);
         } else {
@@ -59,7 +59,7 @@ public class ToDoListAppController {
      */
     @RequestMapping(value = "", params = {"username"})
     public Object checkUserName(@RequestParam(value = "username") String userName) {
-        User user = toDoListAppService.finUserName(userName);
+        User user = userServiceImpl.finUserName(userName);
         if (user == null) {
             return new ApiResult(StatusEnum.NULL_USER, null);
         } else {
@@ -75,9 +75,9 @@ public class ToDoListAppController {
     @RequestMapping("/getAllUser")
     public Object getAllUser(Integer page, Integer size) {
         if (page == null || size == null) {
-            return new ApiResult(StatusEnum.SUCCESS, toDoListAppService.findAll());
+            return new ApiResult(StatusEnum.SUCCESS, userServiceImpl.findAll());
         } else {
-            return new PagingResult<>(StatusEnum.SUCCESS, toDoListAppService.getAllUserByOnlyPage(page, size));
+            return new PagingResult<>(StatusEnum.SUCCESS, userServiceImpl.getAllUserByOnlyPage(page, size));
         }
     }
 
@@ -94,7 +94,7 @@ public class ToDoListAppController {
     public Object createUser(@RequestParam(value = "username") String name
             , @RequestParam(value = "password") String password
             , @RequestParam(value = "phone") String phone) {
-        User user = toDoListAppService.addUser(name, password, phone);
+        User user = userServiceImpl.addUser(name, password, phone);
         if (user == null) {
             return new ApiResult(StatusEnum.FAILED_USER_ADD, null);
         } else {
@@ -111,7 +111,7 @@ public class ToDoListAppController {
     @RequestMapping(value = "/alterUserName")
     public Object alterUserName(@RequestParam(value = "uuid") String UUID, @RequestParam(value = "name") String newUserName) {
         try {
-            toDoListAppService.alterUserName(UUID, newUserName);
+            userServiceImpl.alterUserName(UUID, newUserName);
             return new ApiResult(StatusEnum.SUCCESS, null);
         } catch (Exception e) {
             System.out.println("======error=======：" + e.getMessage());
@@ -128,7 +128,7 @@ public class ToDoListAppController {
     @RequestMapping(value = "/alterUserPwd")
     public Object alterUserPwd(@RequestParam(value = "uuid") String UUID, @RequestParam(value = "pwd") String pwd) {
         try {
-            toDoListAppService.alterUserPwd(UUID, pwd);
+            userServiceImpl.alterUserPwd(UUID, pwd);
             return new ApiResult(StatusEnum.SUCCESS, null);
         } catch (Exception e) {
             System.out.println("======error=======：" + e.getMessage());
