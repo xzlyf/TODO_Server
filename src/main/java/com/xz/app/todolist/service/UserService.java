@@ -1,6 +1,8 @@
 package com.xz.app.todolist.service;
 
 import com.xz.app.todolist.pojo.User;
+import com.xz.app.todolist.pojo.vo.ApiResult;
+import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -13,13 +15,15 @@ public interface UserService {
 
     User findUserNo(String userNo);
 
-    User finUserName(String userName);
+    User findUserName(String userName);
+
+    User findUserPhone(String phone);
 
     List<User> findAll();
 
     Page<User> getAllUserByOnlyPage(Integer page, Integer size);
 
-    User addUser(String name, String password, String phone);
+    ApiResult addUser(String name, String password, String phone);
 
     void alterUserName(String uuid, String newUserName);
 

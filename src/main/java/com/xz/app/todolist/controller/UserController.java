@@ -3,6 +3,7 @@ package com.xz.app.todolist.controller;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.PagingResult;
+import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
 import com.xz.app.todolist.utils.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class UserController {
      */
     @RequestMapping(value = "", params = {"username"})
     public Object checkUserName(@RequestParam(value = "username") String userName) {
-        User user = userServiceImpl.finUserName(userName);
+        User user = userServiceImpl.findUserName(userName);
         if (user == null) {
             return new ApiResult(StatusEnum.NULL_USER, null);
         } else {
@@ -90,20 +91,16 @@ public class UserController {
      * @param phone
      * @return
      */
-    @RequestMapping(value = "/addUser", params = {"username", "password", "phone"})
-    public Object createUser(@RequestParam(value = "username") String name
+    @RequestMapping(value = "/registerUser", params = {"username", "password", "phone"})
+    public Object registerUser(@RequestParam(value = "username") String name
             , @RequestParam(value = "password") String password
             , @RequestParam(value = "phone") String phone) {
-        User user = userServiceImpl.addUser(name, password, phone);
-        if (user == null) {
-            return new ApiResult(StatusEnum.FAILED_USER_ADD, null);
-        } else {
-            return new ApiResult(StatusEnum.SUCCESS, user);
-        }
+        return userServiceImpl.addUser(name, password, phone);
     }
 
     /**
      * 修改用户名
+     *
      * @param UUID
      * @param newUserName
      * @return
@@ -121,6 +118,7 @@ public class UserController {
 
     /**
      * 修改用户密码
+     *
      * @param UUID
      * @param pwd
      * @return

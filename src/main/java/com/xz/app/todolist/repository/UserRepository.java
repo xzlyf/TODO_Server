@@ -13,56 +13,50 @@ import java.util.List;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    /**
-     * 根据用户账号查询
-     * <p>
-     * <p>
-     * 相当于    @Query(value = "select t from UserDo t where t.userNo = ?1")
-     *
-     * @param userNo
-     * @return
-     */
-    User findByUserNo(String userNo);
 
     /**
-     * 更具用户名查询
-     *
-     * @param userName
-     * @return
+     * ========增=========
      */
-    User findByUserName(String userName);
-
-
-    /**
-     * 查询表中所有用户
-     *
-     * @return
-     */
-    List<User> findAll();
-
-
-    /**
-     * 插入用户
-     *
-     * @param user
-     * @return
-     */
+    //插入用户
     User save(User user);
 
+
     /**
-     * 更新表数据 by username
+     * ========删=========
      */
+
+
+    /**
+     * ========改=========
+     */
+    //更新表数据 by username
     @Modifying
     @Query("update User t  set t.userName=?2,t.updateTime=?3 where t.uuid=?1")
     void updateStateByUserName(String UUID, String newUserName, Date date);
 
 
-    /**
-     * 更新表数据 by userPwd
-     */
+    //更新表数据 by userPwd
     @Modifying
     @Query("update User t  set t.userPwd=?2,t.updateTime=?3 where t.uuid=?1")
     void updateStateByUserPwd(String UUID, String userPwd, Date date);
+
+
+    /**
+     * ========查=========
+     */
+    //用户账号查询
+    //相当于    @Query(value = "select t from UserDo t where t.userNo = ?1")
+    User findByUserNo(String userNo);
+
+    //用户名查询
+    User findByUserName(String userName);
+
+    //手机号查询
+    User findByUserPhone(String userPhone);
+
+
+    //查询表中所有用户
+    List<User> findAll();
 
 
 }
