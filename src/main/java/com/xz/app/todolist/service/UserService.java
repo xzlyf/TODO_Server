@@ -12,6 +12,9 @@ import java.util.List;
  * @Date: 2020/11/22
  */
 public interface UserService {
+    ApiResult register(String name, String password, String phone);
+
+    //ApiResult login(String );
 
     User findUserNo(String userNo);
 
@@ -22,8 +25,6 @@ public interface UserService {
     List<User> findAll();
 
     Page<User> getAllUserByOnlyPage(Integer page, Integer size);
-
-    ApiResult addUser(String name, String password, String phone);
 
     void alterUserName(String uuid, String newUserName);
 

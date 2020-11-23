@@ -20,6 +20,39 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
 
+
+    /**
+     * 注册接口
+     */
+    @Override
+    public ApiResult register(String name, String password, String phone) {
+        User user = new User();
+        user.setUserName(name);
+        user.setUserPwd(password);
+        user.setUserPhone(phone);
+
+        User checkAgain = findUserPhone(phone);
+        //手机号存在
+        if (checkAgain != null) {
+            return new ApiResult(StatusEnum.FAILED_USER_EXIST, new UserPublicDataVO(checkAgain.getUserName(), checkAgain.getUserNo()));
+        }
+        //生成账号，并查询数据库是否存在此账号，如果存在则重新生成账号
+        String tempAccount;
+        do {
+            tempAccount = AccountGenerate.makeAccount(8);
+            checkAgain = findUserNo(tempAccount);
+        } while (checkAgain != null);
+        user.setUserNo(tempAccount);
+        try {
+            userRepo.save(user);
+            return new ApiResult(StatusEnum.SUCCESS, new UserPublicDataVO(user.getUserName(), user.getUserNo()));
+        } catch (Exception e) {
+            //数据插入失败，可能存在相同项
+            System.out.println("=========error==========:" + e.getMessage());
+            return new ApiResult(StatusEnum.ERROR, null, e.getMessage());
+        }
+    }
+
     /**
      * 根据账号查询用户信息
      */
@@ -91,38 +124,6 @@ public class UserServiceImpl implements UserService {
         Sort sort = Sort.by(Sort.Order.desc("createTime"));//根据createTime字段降序排列
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         return userRepo.findAll(pageable);
-    }
-
-    /**
-     * 保存为新的用户
-     */
-    @Override
-    public ApiResult addUser(String name, String password, String phone) {
-        User user = new User();
-        user.setUserName(name);
-        user.setUserPwd(password);
-        user.setUserPhone(phone);
-
-        User checkAgain = findUserPhone(phone);
-        //手机号存在
-        if (checkAgain != null) {
-            return new ApiResult(StatusEnum.FAILED_USER_EXIST, new UserPublicDataVO(checkAgain.getUserName(), checkAgain.getUserNo()));
-        }
-        //生成账号，并查询数据库是否存在此账号，如果存在则重新生成账号
-        String tempAccount;
-        do {
-            tempAccount = AccountGenerate.makeAccount(8);
-            checkAgain = findUserNo(tempAccount);
-        } while (checkAgain != null);
-        user.setUserNo(tempAccount);
-        try {
-            userRepo.save(user);
-            return new ApiResult(StatusEnum.SUCCESS, new UserPublicDataVO(user.getUserName(), user.getUserNo()));
-        } catch (Exception e) {
-            //数据插入失败，可能存在相同项
-            System.out.println("=========error==========:" + e.getMessage());
-            return new ApiResult(StatusEnum.ERROR, null, e.getMessage());
-        }
     }
 
 

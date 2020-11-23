@@ -3,7 +3,6 @@ package com.xz.app.todolist.controller;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.PagingResult;
-import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
 import com.xz.app.todolist.utils.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +94,7 @@ public class UserController {
     public Object registerUser(@RequestParam(value = "username") String name
             , @RequestParam(value = "password") String password
             , @RequestParam(value = "phone") String phone) {
-        return userServiceImpl.addUser(name, password, phone);
+        return userServiceImpl.register(name, password, phone);
     }
 
     /**
