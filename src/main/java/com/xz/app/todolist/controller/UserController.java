@@ -7,6 +7,7 @@ import com.xz.app.todolist.service.impl.UserServiceImpl;
 import com.xz.app.todolist.utils.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,22 +82,6 @@ public class UserController {
         }
     }
 
-
-    /**
-     * 新增用户
-     *
-     * @param name
-     * @param password
-     * @param phone
-     * @return
-     */
-    @RequestMapping(value = "/registerUser", params = {"username", "password", "phone"})
-    public Object registerUser(@RequestParam(value = "username") String name
-            , @RequestParam(value = "password") String password
-            , @RequestParam(value = "phone") String phone) {
-        return userServiceImpl.register(name, password, phone);
-    }
-
     /**
      * 修改用户名
      *
@@ -133,5 +118,37 @@ public class UserController {
         }
     }
 
+
+    /**
+     * 新增用户
+     *
+     * @param name
+     * @param password
+     * @param phone
+     * @return
+     */
+    @RequestMapping(value = "/registerUser", params = {"username", "password", "phone"})
+    public Object registerUser(@RequestParam(value = "username") String name
+            , @RequestParam(value = "password") String password
+            , @RequestParam(value = "phone") String phone) {
+        return userServiceImpl.register(name, password, phone);
+    }
+
+    /**
+     * 用户登录
+     *
+     * @param password
+     * @param phone
+     * @return
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Object login(
+            @RequestParam(value = "phone") String phone,
+            @RequestParam(value = "password") String password,
+            @RequestParam(value = "type") String type,
+            @RequestParam(value = "md5") String md5) {
+
+        return userServiceImpl.login(phone, password, type);
+    }
 
 }

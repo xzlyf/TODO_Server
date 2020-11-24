@@ -14,7 +14,7 @@ import java.util.List;
 public interface UserService {
     ApiResult register(String name, String password, String phone);
 
-    //ApiResult login(String );
+    ApiResult login(String userPhone, String userPwd, String type);
 
     User findUserNo(String userNo);
 

@@ -4,6 +4,7 @@ import com.xz.app.todolist.pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -32,14 +33,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //更新表数据 by username
     @Modifying
     @Query("update User t  set t.userName=?2,t.updateTime=?3 where t.uuid=?1")
-    void updateStateByUserName(String UUID, String newUserName, Date date);
+    void updateStateByUserName(String uuid, String newUserName, Date date);
 
 
     //更新表数据 by userPwd
     @Modifying
     @Query("update User t  set t.userPwd=?2,t.updateTime=?3 where t.uuid=?1")
-    void updateStateByUserPwd(String UUID, String userPwd, Date date);
+    void updateStateByUserPwd(String uuid, String userPwd, Date date);
 
+    //更新表数据 by token
+    @Modifying
+    @Query("update User t set t.token=?2 where t.uuid=?1")
+    void updateStateByToken(String uuid, String token);
 
     /**
      * ========查=========
@@ -54,6 +59,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //手机号查询
     User findByUserPhone(String userPhone);
 
+    //账号登录
+    @Query("select  t from User t where t.userNo=?1 and t.userPwd=?2")
+    User loginByUserNo(String userNo, String userPwd);
+
+    //手机号登录登录 //自定义sql查询
+    @Query("select  t.token from User t where t.userPhone=?1 and t.userPwd=?2")
+    String loginByPhone(String userPhone, String userPwd);
+
+    //使用token登录
+    @Query("select  t.token from User t where t.userPhone=?1 and t.token=?2")
+    User loginByToken(String userPhone, String token);
 
     //查询表中所有用户
     List<User> findAll();

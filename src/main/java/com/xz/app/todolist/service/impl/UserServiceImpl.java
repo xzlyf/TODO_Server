@@ -1,11 +1,13 @@
 package com.xz.app.todolist.service.impl;
 
+import com.xz.app.todolist.constant.Local;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import com.xz.app.todolist.repository.UserRepository;
 import com.xz.app.todolist.service.UserService;
 import com.xz.app.todolist.utils.AccountGenerate;
+import com.xz.app.todolist.utils.MD5Util;
 import com.xz.app.todolist.utils.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -51,6 +53,58 @@ public class UserServiceImpl implements UserService {
             System.out.println("=========error==========:" + e.getMessage());
             return new ApiResult(StatusEnum.ERROR, null, e.getMessage());
         }
+    }
+
+    /**
+     * 登录接口
+     *
+     * @param type 1-手机登录  2-账号登录 3-token登录
+     * @return
+     */
+    @Transactional//开启事务，否则执行update/delete时将失败
+    @Override
+    public ApiResult login(String phoneOrUserNo, String userPwd, String type) {
+        User user = null;
+        if (type.equals("1")) {
+            //手机号登录
+            user = userRepo.findByUserPhone(phoneOrUserNo);
+            if (user == null) {
+                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_PHONE, null);
+            }
+        } else if (type.equals("2")) {
+            //账号登录
+            user = userRepo.findByUserNo(phoneOrUserNo);
+            if (user == null) {
+                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
+            }
+        } else if (type.equals("3")) {
+            //token登录
+            user = userRepo.findByUserNo(phoneOrUserNo);
+            //计算最新的token
+            String newToken = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret);
+            if (!userPwd.equalsIgnoreCase(newToken)) {
+                //token过期
+                return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+            }else{
+                //未过期
+                return new ApiResult(StatusEnum.SUCCESS, newToken);
+            }
+
+        } else {
+            //参数错误
+            return new ApiResult(StatusEnum.ERROR_PARAMS, null);
+        }
+
+        //判断密码是否正确
+        if (!userPwd.equalsIgnoreCase(MD5Util.getMD5(user.getUserPwd()))) {
+            return new ApiResult(StatusEnum.FAILED_USER_LOGIN, null);
+        }
+
+        //生成token
+        String token = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret);
+        userRepo.updateStateByToken(user.getUuid(), token);
+        return new ApiResult(StatusEnum.SUCCESS, token);
+
     }
 
     /**
