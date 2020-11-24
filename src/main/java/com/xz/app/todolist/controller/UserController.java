@@ -4,7 +4,7 @@ import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.PagingResult;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
-import com.xz.app.todolist.utils.StatusEnum;
+import com.xz.app.todolist.constant.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -145,8 +145,7 @@ public class UserController {
     public Object login(
             @RequestParam(value = "phone") String phone,
             @RequestParam(value = "password") String password,
-            @RequestParam(value = "type") String type,
-            @RequestParam(value = "md5") String md5) {
+            @RequestParam(value = "type") String type) {
 
         return userServiceImpl.login(phone, password, type);
     }

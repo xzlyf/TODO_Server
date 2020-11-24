@@ -1,7 +1,7 @@
 package com.xz.app.todolist.pojo.vo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.xz.app.todolist.utils.StatusEnum;
+import com.xz.app.todolist.constant.StatusEnum;
 import lombok.Data;
 
 /**

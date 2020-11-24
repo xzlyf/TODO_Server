@@ -1,6 +1,6 @@
 package com.xz.app.todolist.pojo.vo;
 
-import com.xz.app.todolist.utils.StatusEnum;
+import com.xz.app.todolist.constant.StatusEnum;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;

@@ -118,11 +118,27 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:5.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-redis:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-redis:2.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-keyvalue:2.4.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-oxm:5.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.1" level="project" />
+    <orderEntry type="library" name="Maven: io.lettuce:lettuce-core:6.0.1.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.54.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.54.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.54.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.54.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.54.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.54.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.projectreactor:reactor-core:3.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.reactivestreams:reactive-streams:1.0.3" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.22" level="project" />
     <orderEntry type="library" name="Maven: com.microsoft.sqlserver:sqljdbc4:4.0" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.10.8" level="project" />
     <orderEntry type="library" name="Maven: org.junit.platform:junit-platform-commons:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.12" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.11" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.72" level="project" />
   </component>
 </module>

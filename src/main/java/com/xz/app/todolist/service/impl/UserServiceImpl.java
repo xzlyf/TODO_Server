@@ -8,7 +8,7 @@ import com.xz.app.todolist.repository.UserRepository;
 import com.xz.app.todolist.service.UserService;
 import com.xz.app.todolist.utils.AccountGenerate;
 import com.xz.app.todolist.utils.MD5Util;
-import com.xz.app.todolist.utils.StatusEnum;
+import com.xz.app.todolist.constant.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
