@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional//开启事务，否则执行update/delete时将失败
     @Override
-    public ApiResult login(String phoneOrUserNo, String userPwd, String type) {
+    public ApiResult login(String phoneOrUserNo, String userPwdOrToken, String type) {
         User user = null;
         if (type.equals("1")) {
             //手机号登录
@@ -83,14 +83,12 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
             }
-            //计算最新的token
-            String newToken = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret);
-            if (!userPwd.equalsIgnoreCase(newToken)) {
+            if (!userPwdOrToken.equalsIgnoreCase(user.getToken())) {
                 //token过期
                 return new ApiResult(StatusEnum.ERROR_TOKEN, null);
-            }else{
+            } else {
                 //未过期
-                return new ApiResult(StatusEnum.SUCCESS, newToken);
+                return new ApiResult(StatusEnum.SUCCESS, userPwdOrToken);
             }
 
         } else {
@@ -99,15 +97,40 @@ public class UserServiceImpl implements UserService {
         }
 
         //判断密码是否正确
-        if (!userPwd.equalsIgnoreCase(MD5Util.getMD5(user.getUserPwd()))) {
+        if (!userPwdOrToken.equalsIgnoreCase(MD5Util.getMD5(user.getUserPwd()))) {
             return new ApiResult(StatusEnum.FAILED_USER_LOGIN, null);
         }
 
-        //生成token
-        String token = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret);
+        //生成token 参考生成规则
+        String token = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret + System.currentTimeMillis());
         userRepo.updateStateByToken(user.getUuid(), token);
         return new ApiResult(StatusEnum.SUCCESS, token);
+    }
 
+    /**
+     * 注销登录
+     *
+     * @param userNo
+     * @return
+     */
+    @Transactional//开启事务，否则执行update/delete时将失败
+    @Override
+    public ApiResult logout(String userNo, String token) {
+        User user;
+        try {
+            //账号登录
+            user = userRepo.findByUserNo(userNo);
+            if (user == null) {
+                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
+            }
+            if (!token.equals(user.getToken())) {
+                return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+            }
+            userRepo.updateStateByToken(user.getUuid(), null);
+            return new ApiResult(StatusEnum.SUCCESS, null);
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.ERROR, e.getMessage());
+        }
     }
 
     /**

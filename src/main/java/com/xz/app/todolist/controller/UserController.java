@@ -6,10 +6,7 @@ import com.xz.app.todolist.pojo.vo.PagingResult;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
 import com.xz.app.todolist.constant.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * user 控制层
@@ -148,6 +145,18 @@ public class UserController {
             @RequestParam(value = "type") String type) {
 
         return userServiceImpl.login(phone, password, type);
+    }
+
+    /**
+     * 注销登录
+     *
+     * @param userNo
+     * @return
+     */
+    @GetMapping(value = "/logout")
+    public Object logout(@RequestParam(value = "userNo") String userNo,
+                         @RequestParam(value = "token") String token) {
+        return userServiceImpl.logout(userNo, token);
     }
 
 }

@@ -58,7 +58,7 @@ public class SignInterceptor implements HandlerInterceptor {
             ServletUtil.renderString(response, JSON.toJSONString(new ApiResult(StatusEnum.ERROR_APPID_NULL, null)));
             return false;
         }
-        logger.warn(System.currentTimeMillis()+"=====来自APPID的请求:"+appId);
+        //logger.info(System.currentTimeMillis()+"=====来自APPID的请求:"+appId);
 
         //拦截签名校验失败的请求
         String sign = request.getHeader("sign");
