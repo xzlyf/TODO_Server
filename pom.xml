@@ -23,12 +23,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<!--引入log4j需排除Logback-->
-			<exclusions>
+			<!--<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions>-->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

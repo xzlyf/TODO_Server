@@ -52,6 +52,12 @@ public class User implements Serializable {
     @Column(name = "token", length = 32)
     private String token;
 
+
+    //User是关系的维护端，当删除 User，会级联删除
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")//唯一外键
+    private UserDetail userDetail;
+
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

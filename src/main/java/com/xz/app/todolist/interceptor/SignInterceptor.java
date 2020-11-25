@@ -7,8 +7,6 @@ import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.utils.MD5Util;
 import com.xz.app.todolist.utils.ServletUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class SignInterceptor implements HandlerInterceptor {
-    private static Logger logger= LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
     private static long REQUEST_TIMEOUT = 10 * 60 * 1000;//服务器时间不可与服务器相差超过10分钟
 
     /**
