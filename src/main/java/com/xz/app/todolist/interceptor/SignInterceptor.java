@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class SignInterceptor implements HandlerInterceptor {
-    private static final Logger logger = LogManager.getLogger("bussniesslog");
+    private static Logger logger= LogManager.getLogger(LogManager.ROOT_LOGGER_NAME);
     private static long REQUEST_TIMEOUT = 10 * 60 * 1000;//服务器时间不可与服务器相差超过10分钟
 
     /**
@@ -58,6 +58,7 @@ public class SignInterceptor implements HandlerInterceptor {
             ServletUtil.renderString(response, JSON.toJSONString(new ApiResult(StatusEnum.ERROR_APPID_NULL, null)));
             return false;
         }
+        logger.warn(System.currentTimeMillis()+"=====来自APPID的请求:"+appId);
 
         //拦截签名校验失败的请求
         String sign = request.getHeader("sign");
