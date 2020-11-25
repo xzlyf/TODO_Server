@@ -22,6 +22,7 @@ public class DefaultMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(signInterceptor)
                 .addPathPatterns("/**")
+                .excludePathPatterns("/user/now") //排除部分开放接口
                 .excludePathPatterns("/html/*","/js/*");   //排除html/js目录
     }
 
