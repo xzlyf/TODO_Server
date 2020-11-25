@@ -78,8 +78,11 @@ public class UserServiceImpl implements UserService {
                 return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
             }
         } else if (type.equals("3")) {
-            //token登录
+            //token登录 登录账号默认使用的是手机号
             user = userRepo.findByUserNo(phoneOrUserNo);
+            if (user == null) {
+                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
+            }
             //计算最新的token
             String newToken = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret);
             if (!userPwd.equalsIgnoreCase(newToken)) {
