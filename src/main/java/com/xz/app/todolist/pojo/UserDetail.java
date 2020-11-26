@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ import java.util.Date;
 @Data
 @DynamicUpdate
 @Table(name = "user_detail")
+@EntityListeners(AuditingEntityListener.class)
 public class UserDetail {
     /**
      * 主键自动生成id

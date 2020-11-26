@@ -1,12 +1,15 @@
 package com.xz.app.todolist.controller;
 
 import com.xz.app.todolist.pojo.User;
+import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.PagingResult;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
 import com.xz.app.todolist.constant.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  * user 控制层
@@ -161,7 +164,15 @@ public class UserController {
 
     @GetMapping(value = "/update")
     public Object updateDetail(@RequestParam(value = "token") String token) {
-        return userServiceImpl.updateDetail(token);
+        UserDetail d = new UserDetail();
+        d.setBirthday(new Date(System.currentTimeMillis()));
+        //d.setCompany("田舍传媒有限公司");
+        //d.setNickName("可爱多多");
+        d.setProfession("招标");
+        //d.setDescription("信息科技造就未来");
+        //d.setSex("男");
+        //d.setSite("广东省深圳市");
+        return userServiceImpl.updateDetail(token,d);
     }
 
 }

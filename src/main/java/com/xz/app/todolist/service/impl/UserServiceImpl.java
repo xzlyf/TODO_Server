@@ -11,6 +11,8 @@ import com.xz.app.todolist.service.UserService;
 import com.xz.app.todolist.utils.AccountGenerate;
 import com.xz.app.todolist.utils.MD5Util;
 import com.xz.app.todolist.constant.StatusEnum;
+import com.xz.app.todolist.utils.MyBeanUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -137,19 +139,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public ApiResult updateDetail(String token) {
+    @Override
+    public ApiResult updateDetail(String token, UserDetail detail) {
         User user = userRepo.findByToken(token);
-        UserDetail detail = new UserDetail();
-        detail.setBirthday(new Date(System.currentTimeMillis()));
-        detail.setCompany("一呼有限公司");
-        detail.setNickName("小白兔白了又白");
-        detail.setProfession("程序员");
-        detail.setDescription("非礼勿视");
-        detail.setSex("男");
-        detail.setSite("广东省深圳市");
-        user.setUserDetail(userDetailRepo.save(detail));
-        userRepo.save(user);
-        return new ApiResult(StatusEnum.SUCCESS, null);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+        if (user.getUserDetail() == null) {
+            //详情信息为空，将新建
+            user.setUserDetail(userDetailRepo.save(detail));
+            userRepo.save(user);
+            return new ApiResult(StatusEnum.SUCCESS, null);
+        }
+        UserDetail target = userDetailRepo.findById(user.getUserDetail().getId()).get();
+        BeanUtils.copyProperties(detail, target, MyBeanUtils.getNullPropertyNames(detail));
+        detail.setUpdateTime(new Date());
+        userDetailRepo.save(detail);
+
+        //目前问题是可以正常更新，但是会新建一列存储已更新的字段
+        return new ApiResult(StatusEnum.SUCCESS, "个人详情信息更新成功");
+
     }
 
     /**

@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * user_detail表  dao
  */
 public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
+
 }

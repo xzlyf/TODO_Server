@@ -1,6 +1,7 @@
 package com.xz.app.todolist.service;
 
 import com.xz.app.todolist.pojo.User;
+import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ public interface UserService {
     ApiResult login(String userPhone, String userPwd, String type);
 
     ApiResult logout(String userNo,String token);
+
+    ApiResult updateDetail(String token, UserDetail detail);
+
 
     User findUserNo(String userNo);
 
