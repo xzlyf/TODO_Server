@@ -5,7 +5,6 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -28,18 +27,18 @@ public class UserDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", length = 32)
-    private String id;
+    private Long id;
 
     @Column(name = "nick_name", length = 32)
     private String nickName;
 
-    @Column(name = "brith_date")
-    private Date brithDate;
+    @Column(name = "birthday")
+    private Date birthday;
 
     @Column(name = "sex", length = 8)
     private String sex;
 
-    @Column(name = "site", length = 255)
+    @Column(name = "site")
     private String site;
 
     @Column(name = "profession", length = 64)
@@ -48,7 +47,7 @@ public class UserDetail {
     @Column(name = "company", length = 64)
     private String company;
 
-    @Column(name = "description", length = 255)
+    @Column(name = "description")
     private String description;
 
     //如果不需要根据Address级联查询People，可以注释掉

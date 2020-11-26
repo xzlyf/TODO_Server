@@ -159,4 +159,9 @@ public class UserController {
         return userServiceImpl.logout(userNo, token);
     }
 
+    @GetMapping(value = "/update")
+    public Object updateDetail(@RequestParam(value = "token") String token) {
+        return userServiceImpl.updateDetail(token);
+    }
+
 }

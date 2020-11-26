@@ -1,10 +1,10 @@
 package com.xz.app.todolist.repository;
 
 import com.xz.app.todolist.pojo.User;
+import com.xz.app.todolist.pojo.UserDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -20,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     //插入用户
     User save(User user);
+    //插入用户详情信息
 
 
     /**
@@ -46,6 +47,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("update User t set t.token=?2 where t.uuid=?1")
     void updateStateByToken(String uuid, String token);
 
+    @Modifying
+    @Query("update User t set t.userDetail=?2 where t.uuid=?1")
+    void updateDetail(String uuid, UserDetail userDetail);
+
     /**
      * ========查=========
      */
@@ -58,6 +63,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     //手机号查询
     User findByUserPhone(String userPhone);
+
+    //token查询
+    User findByToken(String token);
 
     //账号登录
     @Query("select  t from User t where t.userNo=?1 and t.userPwd=?2")

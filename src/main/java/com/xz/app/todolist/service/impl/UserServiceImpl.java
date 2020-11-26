@@ -2,8 +2,10 @@ package com.xz.app.todolist.service.impl;
 
 import com.xz.app.todolist.constant.Local;
 import com.xz.app.todolist.pojo.User;
+import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
+import com.xz.app.todolist.repository.UserDetailRepository;
 import com.xz.app.todolist.repository.UserRepository;
 import com.xz.app.todolist.service.UserService;
 import com.xz.app.todolist.utils.AccountGenerate;
@@ -21,7 +23,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
-
+    @Autowired
+    UserDetailRepository userDetailRepo;
 
     /**
      * 注册接口
@@ -131,6 +134,22 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return new ApiResult(StatusEnum.ERROR, e.getMessage());
         }
+    }
+
+    @Transactional
+    public ApiResult updateDetail(String token) {
+        User user = userRepo.findByToken(token);
+        UserDetail detail = new UserDetail();
+        detail.setBirthday(new Date(System.currentTimeMillis()));
+        detail.setCompany("一呼有限公司");
+        detail.setNickName("小白兔白了又白");
+        detail.setProfession("程序员");
+        detail.setDescription("非礼勿视");
+        detail.setSex("男");
+        detail.setSite("广东省深圳市");
+        user.setUserDetail(userDetailRepo.save(detail));
+        userRepo.save(user);
+        return new ApiResult(StatusEnum.SUCCESS, null);
     }
 
     /**
