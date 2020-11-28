@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
         detail.setUpdateTime(new Date());
         userDetailRepo.save(detail);
 
-        //目前问题是可以正常更新，但是会新建一列存储已更新的字段
+        //目前问题是可以正常更新，但是会新建一列存储已更新的字段=====
         return new ApiResult(StatusEnum.SUCCESS, "个人详情信息更新成功");
 
     }
