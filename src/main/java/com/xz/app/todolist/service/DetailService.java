@@ -8,5 +8,5 @@ import com.xz.app.todolist.pojo.vo.ApiResult;
  * @Date: 2020/11/30
  */
 public interface DetailService {
-    ApiResult updateDetail(Long id ,UserDetail detail);
+    ApiResult updateDetail(String uuid ,UserDetail detail);
 }

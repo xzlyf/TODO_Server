@@ -5,6 +5,8 @@ import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.PagingResult;
+import com.xz.app.todolist.service.DetailService;
+import com.xz.app.todolist.service.impl.DetailServiceImpl;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
 import com.xz.app.todolist.constant.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
+    @Autowired
+    private DetailServiceImpl detailServiceImpl;
 
     /**
      * 获取当前服务器时间
@@ -170,7 +174,12 @@ public class UserController {
     @PostMapping(value = "/update", produces = "application/json;charset=UTF-8")
     public Object updateDetail(@RequestBody UserDetail detail,
                                @RequestParam String token) {
-        //return userServiceImpl.updateDetail(token, detail);
+
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+
         return new ApiResult(StatusEnum.SUCCESS, JSON.toJSON(detail));
     }
 

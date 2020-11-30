@@ -8,6 +8,7 @@ import com.xz.app.todolist.service.DetailService;
 import com.xz.app.todolist.utils.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -16,15 +17,15 @@ import java.util.Date;
  * @Author: xz
  * @Date: 2020/11/30
  */
+@Service
 public class DetailServiceImpl implements DetailService {
     @Autowired
     UserDetailRepository userDetailRepo;
 
     @Transactional
     @Override
-    public ApiResult updateDetail(Long id ,UserDetail detail) {
-
-        UserDetail target = userDetailRepo.findById(id).get();
+    public ApiResult updateDetail(String uuid, UserDetail detail) {
+        UserDetail target = userDetailRepo.findByUUID(uuid);
         BeanUtils.copyProperties(detail, target, MyBeanUtils.getNullPropertyNames(detail));
         detail.setUpdateTime(new Date());
         userDetailRepo.save(detail);

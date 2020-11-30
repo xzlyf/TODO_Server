@@ -47,9 +47,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("update User t set t.token=?2 where t.uuid=?1")
     void updateStateByToken(String uuid, String token);
 
-    @Modifying
-    @Query("update User t set t.userDetail=?2 where t.uuid=?1")
-    void updateDetail(String uuid, UserDetail userDetail);
 
     /**
      * ========查=========

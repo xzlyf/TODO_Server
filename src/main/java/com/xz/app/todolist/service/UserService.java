@@ -17,8 +17,7 @@ public interface UserService {
 
     ApiResult login(String userPhone, String userPwd, String type);
 
-    ApiResult logout(String userNo,String token);
-
+    ApiResult logout(String userNo, String token);
 
 
     User findUserNo(String userNo);
@@ -26,6 +25,8 @@ public interface UserService {
     User findUserName(String userName);
 
     User findUserPhone(String phone);
+
+    User findUserToken(String token);
 
     List<User> findAll();
 

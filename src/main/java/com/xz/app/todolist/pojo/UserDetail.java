@@ -54,9 +54,9 @@ public class UserDetail {
     @Column(name = "description")
     private String description;
 
-    //如果不需要根据Address级联查询People，可以注释掉
-    //@OneToOne(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
-    //private User user;
+    @JoinColumn(name = "uuid") //joinColumn 映射外键列名
+    @ManyToOne //多对一 使用@ManyToOne
+    private User user;
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

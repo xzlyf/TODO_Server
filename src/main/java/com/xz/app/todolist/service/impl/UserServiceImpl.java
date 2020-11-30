@@ -3,15 +3,12 @@ package com.xz.app.todolist.service.impl;
 import com.xz.app.todolist.constant.Local;
 import com.xz.app.todolist.constant.StatusEnum;
 import com.xz.app.todolist.pojo.User;
-import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import com.xz.app.todolist.repository.UserRepository;
 import com.xz.app.todolist.service.UserService;
 import com.xz.app.todolist.utils.AccountGenerate;
 import com.xz.app.todolist.utils.MD5Util;
-import com.xz.app.todolist.utils.MyBeanUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -139,14 +136,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public ApiResult updateDetail(String token) {
-        User user = userRepo.findByToken(token);
-        if (user == null) {
-            return null;
-        }
-        return null;
-
-    }
 
     /**
      * 根据账号查询用户信息
@@ -189,6 +178,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserPhone(String phone) {
         return userRepo.findByUserPhone(phone);
+    }
+
+    @Override
+    public User findUserToken(String token) {
+        return userRepo.findByToken(token);
     }
 
 

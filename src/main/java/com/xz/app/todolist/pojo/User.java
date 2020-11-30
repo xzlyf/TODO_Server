@@ -54,9 +54,9 @@ public class User implements Serializable {
 
 
     //User是关系的维护端，当删除 User，会级联删除
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "detail_id", referencedColumnName = "id")//唯一外键
-    private UserDetail userDetail;
+    //@OneToOne(cascade=CascadeType.ALL)
+    //@JoinColumn(name = "detail_id", referencedColumnName = "id")//唯一外键
+    //private UserDetail userDetail;
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
