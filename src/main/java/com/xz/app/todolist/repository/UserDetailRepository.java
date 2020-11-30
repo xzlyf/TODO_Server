@@ -2,9 +2,11 @@ package com.xz.app.todolist.repository;
 
 import com.xz.app.todolist.pojo.UserDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +26,9 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
     /**
      * 改
      */
+    @Modifying
+    @Query("update UserDetail t  set t=?2 where t.user.uuid=?1")
+    void updateDetail(String uuid, UserDetail detail);
 
     /**
      * 查

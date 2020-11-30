@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,8 +29,8 @@ public class UserDetail {
      * 主键自动生成id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore//作用：在实体类向前台返回数据时用来忽略不想传递给前台的属性或接口。
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //sql自动生成策略
+    @JsonIgnore
     @Column(name = "id", length = 32)
     private Long id;
 
@@ -54,7 +55,7 @@ public class UserDetail {
     @Column(name = "description")
     private String description;
 
-    @JoinColumn(name = "uuid") //joinColumn 映射外键列名
+    @JoinColumn(name = "uuid",unique = true) //joinColumn 映射外键列名
     @ManyToOne //多对一 使用@ManyToOne
     private User user;
 

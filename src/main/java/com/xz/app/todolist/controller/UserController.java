@@ -180,7 +180,7 @@ public class UserController {
             return new ApiResult(StatusEnum.ERROR_TOKEN, null);
         }
 
-        return new ApiResult(StatusEnum.SUCCESS, JSON.toJSON(detail));
+        return detailServiceImpl.updateDetail(user.getUuid(), detail);
     }
 
 }
