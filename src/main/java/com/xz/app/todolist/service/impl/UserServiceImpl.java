@@ -1,20 +1,22 @@
 package com.xz.app.todolist.service.impl;
 
 import com.xz.app.todolist.constant.Local;
+import com.xz.app.todolist.constant.StatusEnum;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
-import com.xz.app.todolist.repository.UserDetailRepository;
 import com.xz.app.todolist.repository.UserRepository;
 import com.xz.app.todolist.service.UserService;
 import com.xz.app.todolist.utils.AccountGenerate;
 import com.xz.app.todolist.utils.MD5Util;
-import com.xz.app.todolist.constant.StatusEnum;
 import com.xz.app.todolist.utils.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
-    @Autowired
-    UserDetailRepository userDetailRepo;
+
 
     /**
      * 注册接口
@@ -138,26 +139,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
-    @Override
-    public ApiResult updateDetail(String token, UserDetail detail) {
+    public ApiResult updateDetail(String token) {
         User user = userRepo.findByToken(token);
         if (user == null) {
-            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+            return null;
         }
-        if (user.getUserDetail() == null) {
-            //详情信息为空，将新建
-            user.setUserDetail(userDetailRepo.save(detail));
-            userRepo.save(user);
-            return new ApiResult(StatusEnum.SUCCESS, null);
-        }
-        UserDetail target = userDetailRepo.findById(user.getUserDetail().getId()).get();
-        BeanUtils.copyProperties(detail, target, MyBeanUtils.getNullPropertyNames(detail));
-        detail.setUpdateTime(new Date());
-        userDetailRepo.save(detail);
-
-        //目前问题是可以正常更新，但是会新建一列存储已更新的字段=====
-        return new ApiResult(StatusEnum.SUCCESS, "个人详情信息更新成功");
+        return null;
 
     }
 

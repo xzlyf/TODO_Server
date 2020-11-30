@@ -19,7 +19,6 @@ public interface UserService {
 
     ApiResult logout(String userNo,String token);
 
-    ApiResult updateDetail(String token, UserDetail detail);
 
 
     User findUserNo(String userNo);
