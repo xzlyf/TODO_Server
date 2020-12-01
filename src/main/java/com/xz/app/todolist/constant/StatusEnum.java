@@ -17,7 +17,8 @@ public enum StatusEnum {
     FAILED_USER_EXIST(1048,"手机号已注册"),
     FAILED_USER_LOGIN(1049,"账号或密码错误"),
     FAILED_USER_LOGIN_NO_USER_PHONE(1050,"手机号未注册"),
-    FAILED_USER_LOGIN_NO_USER_NO(1051,"账号未注册");
+    FAILED_USER_LOGIN_NO_USER_NO(1051,"账号未注册"),
+    FAILED_USER_DETAIL_UPDATE(1052,"用户信息更新失败");
 
     /**
      * 响应状态码

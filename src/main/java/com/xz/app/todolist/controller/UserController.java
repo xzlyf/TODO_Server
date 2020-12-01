@@ -179,8 +179,13 @@ public class UserController {
         if (user == null) {
             return new ApiResult(StatusEnum.ERROR_TOKEN, null);
         }
-
-        return detailServiceImpl.updateDetail(user.getUuid(), detail);
+        try {
+            detailServiceImpl.updateDetail(user.getUuid(), detail);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResult(StatusEnum.FAILED_USER_DETAIL_UPDATE, null);
+        }
+        return new ApiResult(StatusEnum.SUCCESS, null);
     }
 
 }

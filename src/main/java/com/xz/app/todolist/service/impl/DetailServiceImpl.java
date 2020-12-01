@@ -33,7 +33,7 @@ public class DetailServiceImpl implements DetailService {
      */
     @Transactional
     @Override
-    public ApiResult updateDetail(String uuid, UserDetail detail) {
+    public int updateDetail(String uuid, UserDetail detail) {
 
         //防止被改id
         detail.setId(null);
@@ -44,10 +44,7 @@ public class DetailServiceImpl implements DetailService {
         }
         BeanUtils.copyProperties(detail, target, MyBeanUtils.getNullPropertyNames(detail));
         detail.setUpdateTime(new Date());
-        userDetailRepo.updateDetail(uuid, target);
-
-        //目前问题是可以正常更新，但是会新建一列存储已更新的字段=====
-        return new ApiResult(StatusEnum.SUCCESS, "个人详情信息更新成功");
+        return userDetailRepo.updateDetail(uuid, target);
     }
 
     /**

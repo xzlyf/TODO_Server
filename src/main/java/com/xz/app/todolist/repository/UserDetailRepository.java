@@ -18,7 +18,7 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
     /**
      * 增
      */
-
+    //UserDetail save(UserDetail detail);
     /**
      * 删
      */
@@ -28,7 +28,7 @@ public interface UserDetailRepository extends JpaRepository<UserDetail, Long> {
      */
     @Modifying
     @Query("update UserDetail t  set t=?2 where t.user.uuid=?1")
-    void updateDetail(String uuid, UserDetail detail);
+    int updateDetail(String uuid, UserDetail detail);
 
     /**
      * 查
