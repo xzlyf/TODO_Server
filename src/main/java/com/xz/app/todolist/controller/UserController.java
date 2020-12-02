@@ -219,14 +219,18 @@ public class UserController {
      * @param pwd
      * @return
      */
-    @RequestMapping(value = "/alterPwd")
-    public Object alterUserPwd(@RequestParam(value = "token") String token, @RequestParam(value = "pwd") String pwd) {
+    @PostMapping(value = "/alterPwd")
+    public Object alterUserPwd(@RequestParam(value = "token") String token,
+                               @RequestParam(value = "pwd") String pwd) {
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
         try {
-            userServiceImpl.alterUserPwd(token, pwd);
+            userServiceImpl.alterUserPwd(user.getUuid(), pwd);
             return new ApiResult(StatusEnum.SUCCESS, null);
         } catch (Exception e) {
-            System.out.println("======error=======：" + e.getMessage());
-            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, null);
+            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, e.getMessage());
         }
     }
 

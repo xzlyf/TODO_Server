@@ -1,9 +1,7 @@
 package com.xz.app.todolist.service;
 
 import com.xz.app.todolist.pojo.User;
-import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
-import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import org.springframework.data.domain.Page;
 
 import java.security.NoSuchAlgorithmException;
@@ -29,6 +27,8 @@ public interface UserService {
     User findUserPhone(String phone);
 
     User findUserToken(String token);
+
+    User findUUID(String uuid);
 
     List<User> findAll();
 

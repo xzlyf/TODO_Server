@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
     /**
      * 登录接口
      *
-     *
      * @return
      */
     @Transactional//开启事务，否则执行update/delete时将失败
@@ -72,8 +71,8 @@ public class UserServiceImpl implements UserService {
     public String login(User user, String rsaPwd) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         //使用私钥解密密文
-        String pwd = RSAUtil.privateDecrypt(rsaPwd,RSAUtil.getPrivateKey(Local.privateKey));
-        if (!user.getUserPwd().equals(pwd)){
+        String pwd = RSAUtil.privateDecrypt(rsaPwd, RSAUtil.getPrivateKey(Local.privateKey));
+        if (!user.getUserPwd().equals(pwd)) {
             return null;
         }
 
@@ -159,6 +158,11 @@ public class UserServiceImpl implements UserService {
         return userRepo.findByToken(token);
     }
 
+    @Override
+    public User findUUID(String uuid) {
+        return userRepo.findByUuid(uuid);
+    }
+
 
     /**
      * 查询表里所有用户
@@ -204,13 +208,20 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 更新密码
-     *
-     * @param uuid
+     *  @param uuid
      * @param newUserPwd
      */
     @Transactional//开启事务，否则执行update/delete时将失败
     @Override
     public void alterUserPwd(String uuid, String newUserPwd) {
-        userRepo.updateStateByUserPwd(uuid, newUserPwd, new Date(System.currentTimeMillis()));
+        //解密使用公钥加密的密文
+        String pwd = null;
+        try {
+            pwd = RSAUtil.privateDecrypt(newUserPwd, RSAUtil.getPrivateKey(Local.privateKey));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        userRepo.updateStateByUserPwd(uuid, pwd, new Date(System.currentTimeMillis()));
     }
 }

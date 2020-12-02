@@ -64,6 +64,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //token查询
     User findByToken(String token);
 
+    //uuid查询
+    User findByUuid(String uuid);
+
     //账号登录
     @Query("select  t from User t where t.userNo=?1 and t.userPwd=?2")
     User loginByUserNo(String userNo, String userPwd);
