@@ -6,6 +6,8 @@ import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.UserPublicDataVO;
 import org.springframework.data.domain.Page;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 /**
@@ -15,7 +17,7 @@ import java.util.List;
 public interface UserService {
     ApiResult register(String name, String password, String phone);
 
-    ApiResult login(String userPhone, String userPwd, String type);
+    String login(User user, String rsaPwd) throws InvalidKeySpecException, NoSuchAlgorithmException;
 
     ApiResult logout(String userNo, String token);
 

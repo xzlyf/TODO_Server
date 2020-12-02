@@ -9,6 +9,7 @@ import com.xz.app.todolist.repository.UserRepository;
 import com.xz.app.todolist.service.UserService;
 import com.xz.app.todolist.utils.AccountGenerate;
 import com.xz.app.todolist.utils.MD5Util;
+import com.xz.app.todolist.utils.RSAUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.List;
 
@@ -61,53 +64,24 @@ public class UserServiceImpl implements UserService {
     /**
      * 登录接口
      *
-     * @param type 1-手机登录  2-账号登录 3-token登录
+     *
      * @return
      */
     @Transactional//开启事务，否则执行update/delete时将失败
     @Override
-    public ApiResult login(String phoneOrUserNo, String userPwdOrToken, String type) {
-        User user = null;
-        if (type.equals("1")) {
-            //手机号登录
-            user = userRepo.findByUserPhone(phoneOrUserNo);
-            if (user == null) {
-                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_PHONE, null);
-            }
-        } else if (type.equals("2")) {
-            //账号登录
-            user = userRepo.findByUserNo(phoneOrUserNo);
-            if (user == null) {
-                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
-            }
-        } else if (type.equals("3")) {
-            //token登录 登录账号默认使用的是手机号
-            user = userRepo.findByUserNo(phoneOrUserNo);
-            if (user == null) {
-                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
-            }
-            if (!userPwdOrToken.equalsIgnoreCase(user.getToken())) {
-                //token过期
-                return new ApiResult(StatusEnum.ERROR_TOKEN, null);
-            } else {
-                //未过期
-                return new ApiResult(StatusEnum.SUCCESS, userPwdOrToken);
-            }
+    public String login(User user, String rsaPwd) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
-        } else {
-            //参数错误
-            return new ApiResult(StatusEnum.ERROR_PARAMS, null);
+        //使用私钥解密密文
+        String pwd = RSAUtil.privateDecrypt(rsaPwd,RSAUtil.getPrivateKey(Local.privateKey));
+        if (!user.getUserPwd().equals(pwd)){
+            return null;
         }
 
-        //判断密码是否正确
-        if (!userPwdOrToken.equalsIgnoreCase(MD5Util.getMD5(user.getUserPwd()))) {
-            return new ApiResult(StatusEnum.FAILED_USER_LOGIN, null);
-        }
 
         //生成token 参考生成规则
         String token = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret + System.currentTimeMillis());
         userRepo.updateStateByToken(user.getUuid(), token);
-        return new ApiResult(StatusEnum.SUCCESS, token);
+        return token;
     }
 
     /**

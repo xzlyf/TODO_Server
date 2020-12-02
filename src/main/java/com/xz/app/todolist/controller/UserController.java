@@ -1,14 +1,12 @@
 package com.xz.app.todolist.controller;
 
-import com.alibaba.fastjson.JSON;
+import com.xz.app.todolist.constant.StatusEnum;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.UserDetail;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.PagingResult;
-import com.xz.app.todolist.service.DetailService;
 import com.xz.app.todolist.service.impl.DetailServiceImpl;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
-import com.xz.app.todolist.constant.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -113,26 +111,70 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/registerUser", params = {"username", "password", "phone"})
-    public Object registerUser(@RequestParam(value = "username") String name
-            , @RequestParam(value = "password") String password
-            , @RequestParam(value = "phone") String phone) {
+    public Object registerUser(@RequestParam(value = "username") String name,
+                               @RequestParam(value = "password") String password,
+                               @RequestParam(value = "phone") String phone) {
         return userServiceImpl.register(name, password, phone);
     }
 
     /**
      * 用户登录
      *
-     * @param password
-     * @param phone
+     * @param type 1-手机登录  2-账号登录 3-token登录
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     public Object login(
-            @RequestParam(value = "phone") String phone,
+            @RequestParam(value = "account") String account,
             @RequestParam(value = "password") String password,
-            @RequestParam(value = "type") String type) {
+            @RequestParam(value = "type") Integer type) {
 
-        return userServiceImpl.login(phone, password, type);
+        User user = null;
+        switch (type) {
+            case 1:
+                //手机号登录
+                user = userServiceImpl.findUserPhone(account);
+                if (user == null) {
+                    return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_PHONE, null);
+                }
+                break;
+            case 2:
+                //账号登录
+                user = userServiceImpl.findUserNo(account);
+                if (user == null) {
+                    return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
+                }
+                break;
+            case 3:
+                //token登录 登录账号默认使用的是手机号
+                user = userServiceImpl.findUserToken(account);
+                if (user == null) {
+                    return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
+                }
+                if (!password.equalsIgnoreCase(user.getToken())) {
+                    //token过期
+                    return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+                } else {
+                    //未过期
+                    return new ApiResult(StatusEnum.SUCCESS, password);
+                }
+            default:
+                //参数错误
+                return new ApiResult(StatusEnum.ERROR_PARAMS, null);
+        }
+
+        try {
+            String newToken = userServiceImpl.login(user, password);
+            if (newToken == null) {
+                //密码不正确
+                return new ApiResult(StatusEnum.FAILED_USER_LOGIN, null);
+            } else {
+                //返回新的token
+                return new ApiResult(StatusEnum.SUCCESS, newToken);
+            }
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.ERROR, e.getMessage());
+        }
     }
 
     /**
