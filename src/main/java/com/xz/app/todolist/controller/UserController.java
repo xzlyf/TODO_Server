@@ -105,7 +105,7 @@ public class UserController {
 
 
     /**
-     * 新增用户
+     * 注册用户
      *
      * @param name
      * @param password
