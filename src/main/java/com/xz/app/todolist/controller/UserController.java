@@ -103,24 +103,6 @@ public class UserController {
         }
     }
 
-    /**
-     * 修改用户密码
-     *
-     * @param UUID
-     * @param pwd
-     * @return
-     */
-    @RequestMapping(value = "/alterUserPwd")
-    public Object alterUserPwd(@RequestParam(value = "uuid") String UUID, @RequestParam(value = "pwd") String pwd) {
-        try {
-            userServiceImpl.alterUserPwd(UUID, pwd);
-            return new ApiResult(StatusEnum.SUCCESS, null);
-        } catch (Exception e) {
-            System.out.println("======error=======：" + e.getMessage());
-            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, null);
-        }
-    }
-
 
     /**
      * 新增用户
@@ -187,5 +169,24 @@ public class UserController {
         }
         return new ApiResult(StatusEnum.SUCCESS, null);
     }
+
+    /**
+     * 修改用户密码
+     *
+     * @param token
+     * @param pwd
+     * @return
+     */
+    @RequestMapping(value = "/alterPwd")
+    public Object alterUserPwd(@RequestParam(value = "token") String token, @RequestParam(value = "pwd") String pwd) {
+        try {
+            userServiceImpl.alterUserPwd(token, pwd);
+            return new ApiResult(StatusEnum.SUCCESS, null);
+        } catch (Exception e) {
+            System.out.println("======error=======：" + e.getMessage());
+            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, null);
+        }
+    }
+
 
 }
