@@ -32,6 +32,11 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query("update Event e set e=?1 where e.author.uuid=?2 and e.id=?3")
     int updateEvent(Event event, String uuid, String id);
 
+    @Modifying
+    @Query("update Event e set e.done=?1 where e.author.uuid=?2 and e.id=?3")
+    int updateDone(Boolean isDone, String uuid, String id);
+
+
     /**
      * 查
      */

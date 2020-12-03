@@ -91,4 +91,22 @@ public class EventController {
 
     }
 
+    @GetMapping(value = "setStatus")
+    public Object setStatus(@RequestParam Boolean status,
+                            @RequestParam String token,
+                            @RequestParam String id){
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+        try {
+            if (eventService.updateStatus(status, user.getUuid(), id)) {
+                return new ApiResult(StatusEnum.SUCCESS, null);
+            }
+            return new ApiResult(StatusEnum.FAILED_EVENT_NULL, null);
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.FAILED_EVENT_UPDATE, e.getMessage());
+        }
+    }
+
 }

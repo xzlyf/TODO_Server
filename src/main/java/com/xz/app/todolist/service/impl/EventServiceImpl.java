@@ -59,9 +59,16 @@ public class EventServiceImpl implements EventService {
         return !(i == 0);
     }
 
+    @Transactional
     @Override
-    public void setDone(boolean isDone, String id) {
-
+    public boolean updateStatus(boolean isDone, String uuid, String id) {
+        Event event = eventRepository.findById(id);
+        if (event == null) {
+            return false;
+        }
+        int i = eventRepository.updateDone(isDone, uuid, id);
+        //等于0更新失败
+        return !(i == 0);
     }
 
     @Override
