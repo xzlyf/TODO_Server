@@ -56,7 +56,7 @@ public class UserDetail {
     private String description;
 
     @JoinColumn(name = "uuid",unique = true) //joinColumn 映射外键列名
-    @ManyToOne //多对一 使用@ManyToOne
+    @OneToOne() //一对一
     private User user;
 
     @CreatedDate
