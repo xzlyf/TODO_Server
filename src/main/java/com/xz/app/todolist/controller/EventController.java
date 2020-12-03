@@ -57,12 +57,13 @@ public class EventController {
             return new ApiResult(StatusEnum.ERROR_TOKEN, null);
         }
         try {
-            if (eventService.deleteEvent(id)) {
+            if (eventService.deleteEvent(user.getUuid(), id)) {
                 return new ApiResult(StatusEnum.SUCCESS, null);
             } else {
                 return new ApiResult(StatusEnum.FAILED_EVENT_NULL, null);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return new ApiResult(StatusEnum.FAILED_EVENT_DELETE, null);
         }
     }

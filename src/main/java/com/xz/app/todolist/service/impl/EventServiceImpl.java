@@ -39,12 +39,10 @@ public class EventServiceImpl implements EventService {
 
     @Transactional//开启事务，否则执行update/delete时将失败
     @Override
-    public boolean deleteEvent(String id) {
-        int i = eventRepository.deleteById(id);
-        if (i==1){
-            return true;
-        }
-        return false;
+    public boolean deleteEvent(String uuid, String id) {
+        int i = eventRepository.deleteEvent(uuid, id);
+        //等于0是没有删除成功或者找不到对应id的事件
+        return !(i == 0);
     }
 
     @Override

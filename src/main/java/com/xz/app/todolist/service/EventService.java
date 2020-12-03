@@ -15,7 +15,7 @@ public interface EventService {
     String createEvent(CreateEvent event, User user);
 
     //删除事件
-    boolean deleteEvent(String id);
+    boolean deleteEvent(String uuid,String id);
 
     //修改事件
     void updateEvent(CreateEvent event, String id);
