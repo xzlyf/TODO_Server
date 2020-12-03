@@ -1,7 +1,11 @@
 package com.xz.app.todolist.repository;
 
 import com.xz.app.todolist.pojo.Event;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
@@ -9,7 +13,7 @@ import org.springframework.data.jpa.repository.Query;
  * @Author: xz
  * @Date: 2020/12/3
  */
-public interface EventRepository extends JpaRepository<Event, Long> {
+public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
     /**
      * 增
@@ -42,4 +46,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
      */
 
     Event findById(String id);
+
+    @Query("select e from Event e where e.author.uuid=?1")
+    Page<Event> findByUuid(String uuid, Pageable pageable);
+
 }

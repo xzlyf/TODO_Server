@@ -9,8 +9,17 @@ import com.xz.app.todolist.utils.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: xz
@@ -72,7 +81,26 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<Event> getUserAllEvent(Integer page, Integer size) {
-        return null;
+    public Page<Event> getUserAllEvent(Integer page, Integer size, String uuid) {
+        Sort sort = Sort.by(Sort.Order.desc("createTime"));//根据createTime字段降序排列
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+        //方法一：无条件分页查询
+        //return eventRepository.findAll(pageable);
+        //方法二：specification复杂条件分页查询
+        //Specification<Event> specification = new Specification<Event>() {
+        //    @Override
+        //    public Predicate toPredicate(Root<Event> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+        //        List<Predicate> list = new ArrayList<Predicate>();
+        //        //条件1
+        //        //list.add(cb.like(root.get("content").as(String.class), "%" + uuid + "%"));
+        //        //条件2
+        //        //list.add(cb.like(root.get("uuid").as(String.class), "%" + uuid + "%"));
+        //        return cb.and(list.toArray(new Predicate[list.size()]));
+        //    }
+        //};
+        //return eventRepository.findAll(specification, pageable);
+
+        //方法三：自定义repo分页查询
+        return eventRepository.findByUuid(uuid,pageable);
     }
 }

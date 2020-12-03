@@ -4,6 +4,7 @@ import com.xz.app.todolist.constant.StatusEnum;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.CreateEvent;
+import com.xz.app.todolist.pojo.vo.PagingResult;
 import com.xz.app.todolist.service.impl.EventServiceImpl;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,10 +92,13 @@ public class EventController {
 
     }
 
+    /**
+     * 更新事件状态
+     */
     @GetMapping(value = "setStatus")
     public Object setStatus(@RequestParam Boolean status,
                             @RequestParam String token,
-                            @RequestParam String id){
+                            @RequestParam String id) {
         User user = userServiceImpl.findUserToken(token);
         if (user == null) {
             return new ApiResult(StatusEnum.ERROR_TOKEN, null);
@@ -106,6 +110,26 @@ public class EventController {
             return new ApiResult(StatusEnum.FAILED_EVENT_NULL, null);
         } catch (Exception e) {
             return new ApiResult(StatusEnum.FAILED_EVENT_UPDATE, e.getMessage());
+        }
+    }
+
+    /**
+     * 指定一个用户查询所有事件
+     * 分页查询
+     */
+    @GetMapping(value = "getAllEvent")
+    public Object getAllEvent(@RequestParam Integer page,
+                              @RequestParam Integer size,
+                              @RequestParam String token) {
+
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+        try {
+            return new PagingResult<>(StatusEnum.SUCCESS, eventService.getUserAllEvent(page, size, user.getUuid()));
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.ERROR, e.getMessage());
         }
     }
 

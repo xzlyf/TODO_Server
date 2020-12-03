@@ -62,6 +62,7 @@ public class Event {
     /**
      * 外键 对应uuid
      */
+    @JsonIgnore
     @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示author不能为空。删除事件，不影响用户
     @JoinColumn(name="uuid")//设置在article表中的关联字段(外键)
     private User author;//所属作者
