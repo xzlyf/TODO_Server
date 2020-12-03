@@ -9,4 +9,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface EventRepository extends JpaRepository<EventList, Long> {
 
+    /**
+     * 增
+     */
+
+    /**
+     * 删
+     */
+
+    int deleteById(String id);
+
+    /**
+     * 改
+     */
+
+    /**
+     * 查
+     */
 }

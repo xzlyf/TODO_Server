@@ -19,7 +19,9 @@ public enum StatusEnum {
     FAILED_USER_LOGIN_NO_USER_PHONE(1050,"手机号未注册"),
     FAILED_USER_LOGIN_NO_USER_NO(1051,"账号未注册"),
     FAILED_USER_DETAIL_UPDATE(1052,"用户信息更新失败"),
-    FAILED_EVENT_CREATE(1053,"事件创建失败");
+    FAILED_EVENT_CREATE(1053,"事件创建失败"),
+    FAILED_EVENT_DELETE(1054,"事件删除失败"),
+    FAILED_EVENT_NULL(1055,"未找到对应事件");
 
     /**
      * 响应状态码

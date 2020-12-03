@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author: xz
@@ -23,6 +24,7 @@ public class EventServiceImpl implements EventService {
 
     /**
      * 创建事件
+     *
      * @return 返回事件id
      */
     @Override
@@ -35,9 +37,14 @@ public class EventServiceImpl implements EventService {
         return targetEvent.getId();
     }
 
+    @Transactional//开启事务，否则执行update/delete时将失败
     @Override
-    public void deleteEvent(String id) {
-
+    public boolean deleteEvent(String id) {
+        int i = eventRepository.deleteById(id);
+        if (i==1){
+            return true;
+        }
+        return false;
     }
 
     @Override

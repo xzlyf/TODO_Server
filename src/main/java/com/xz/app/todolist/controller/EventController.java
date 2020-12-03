@@ -22,7 +22,10 @@ public class EventController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @PostMapping(value = "createEvent")
+    /**
+     * 创建事件
+     */
+    @PostMapping(value = "createEvent", produces = "application/json;charset=UTF-8")
     public Object createEvent(@RequestBody CreateEvent event,
                               @RequestParam String token) {
 
@@ -39,6 +42,29 @@ public class EventController {
             return new ApiResult(StatusEnum.FAILED_EVENT_CREATE, e.getMessage());
         }
 
+    }
+
+    /**
+     * 删除事件
+     *
+     * @param id 事件id
+     */
+    @GetMapping(value = "deleteEvent")
+    public Object deleteEvent(@RequestParam String id,
+                              @RequestParam String token) {
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+        try {
+            if (eventService.deleteEvent(id)) {
+                return new ApiResult(StatusEnum.SUCCESS, null);
+            } else {
+                return new ApiResult(StatusEnum.FAILED_EVENT_NULL, null);
+            }
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.FAILED_EVENT_DELETE, null);
+        }
     }
 
 }
