@@ -23,7 +23,7 @@ import java.util.Date;
 @DynamicUpdate
 @Table(name = "event_list")
 @EntityListeners(AuditingEntityListener.class)
-public class EventList {
+public class Event {
     /**
      * 事件唯一id
      */

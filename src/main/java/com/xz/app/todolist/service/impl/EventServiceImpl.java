@@ -1,6 +1,6 @@
 package com.xz.app.todolist.service.impl;
 
-import com.xz.app.todolist.pojo.EventList;
+import com.xz.app.todolist.pojo.Event;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.vo.CreateEvent;
 import com.xz.app.todolist.repository.EventRepository;
@@ -29,11 +29,11 @@ public class EventServiceImpl implements EventService {
      */
     @Override
     public String createEvent(CreateEvent event, User user) {
-        EventList newEvent = new EventList();
+        Event newEvent = new Event();
         newEvent.setAuthor(user);
         //把已修改数据保存到目标对象
         BeanUtils.copyProperties(event, newEvent, MyBeanUtils.getNullPropertyNames(event));
-        EventList targetEvent = eventRepository.save(newEvent);
+        Event targetEvent = eventRepository.save(newEvent);
         return targetEvent.getId();
     }
 
@@ -45,9 +45,18 @@ public class EventServiceImpl implements EventService {
         return !(i == 0);
     }
 
+    @Transactional
     @Override
-    public void updateEvent(CreateEvent event, String id) {
-
+    public boolean updateEvent(CreateEvent event, String uuid, String id) {
+        Event oldEvent = eventRepository.findById(id);
+        if (oldEvent == null) {
+            return false;
+        }
+        //把已修改数据保存到目标对象
+        BeanUtils.copyProperties(event, oldEvent, MyBeanUtils.getNullPropertyNames(event));
+        int i = eventRepository.updateEvent(oldEvent, uuid, id);
+        //等于0更新失败
+        return !(i == 0);
     }
 
     @Override
@@ -56,7 +65,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<EventList> getUserAllEvent(Integer page, Integer size) {
+    public Page<Event> getUserAllEvent(Integer page, Integer size) {
         return null;
     }
 }

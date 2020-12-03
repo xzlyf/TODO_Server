@@ -64,8 +64,31 @@ public class EventController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new ApiResult(StatusEnum.FAILED_EVENT_DELETE, null);
+            return new ApiResult(StatusEnum.FAILED_EVENT_DELETE, e.getMessage());
         }
+    }
+
+
+    /**
+     * 更新事件
+     */
+    @PostMapping(value = "updateEvent", produces = "application/json;charset=UTF-8")
+    public Object updateEvent(@RequestBody CreateEvent event,
+                              @RequestParam String token,
+                              @RequestParam String id) {
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+        try {
+            if (eventService.updateEvent(event, user.getUuid(), id)) {
+                return new ApiResult(StatusEnum.SUCCESS, null);
+            }
+            return new ApiResult(StatusEnum.FAILED_EVENT_NULL, null);
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.FAILED_EVENT_UPDATE, e.getMessage());
+        }
+
     }
 
 }

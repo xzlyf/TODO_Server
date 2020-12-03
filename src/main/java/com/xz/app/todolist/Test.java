@@ -1,10 +1,8 @@
 package com.xz.app.todolist;
 
-import com.xz.app.todolist.constant.Local;
-import com.xz.app.todolist.pojo.EventList;
+import com.xz.app.todolist.pojo.Event;
 import com.xz.app.todolist.pojo.vo.CreateEvent;
 import com.xz.app.todolist.utils.MyBeanUtils;
-import com.xz.app.todolist.utils.RSAUtil;
 import org.springframework.beans.BeanUtils;
 
 import java.security.NoSuchAlgorithmException;
@@ -30,7 +28,7 @@ public class Test {
         createEvent.setShortTitle("测试1");
         createEvent.setDone(false);
 
-        EventList eventList = new EventList();
+        Event eventList = new Event();
         eventList.setId("1234567");
 
 
