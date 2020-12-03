@@ -83,24 +83,6 @@ public class UserController {
         }
     }
 
-    /**
-     * 修改用户名
-     *
-     * @param UUID
-     * @param newUserName
-     * @return
-     */
-    @RequestMapping(value = "/alterUserName")
-    public Object alterUserName(@RequestParam(value = "uuid") String UUID, @RequestParam(value = "name") String newUserName) {
-        try {
-            userServiceImpl.alterUserName(UUID, newUserName);
-            return new ApiResult(StatusEnum.SUCCESS, null);
-        } catch (Exception e) {
-            System.out.println("======error=======：" + e.getMessage());
-            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, null);
-        }
-    }
-
 
     /**
      * 注册用户
@@ -214,10 +196,6 @@ public class UserController {
 
     /**
      * 修改用户密码
-     *
-     * @param token
-     * @param pwd
-     * @return
      */
     @PostMapping(value = "/alterPwd")
     public Object alterUserPwd(@RequestParam(value = "token") String token,
@@ -234,5 +212,23 @@ public class UserController {
         }
     }
 
+    /**
+     * 修改用户名
+     */
+    @GetMapping(value = "/alterName")
+    public Object alterUserName(@RequestParam(value = "token") String token,
+                                @RequestParam(value = "name") String newUserName) {
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+
+        try {
+            userServiceImpl.alterUserName(user.getUuid(), newUserName);
+            return new ApiResult(StatusEnum.SUCCESS, null);
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.FAILED_USER_UPDATE, e.getMessage());
+        }
+    }
 
 }
