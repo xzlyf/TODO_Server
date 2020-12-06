@@ -1,10 +1,14 @@
 package com.xz.app.todolist.controller;
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.xz.app.todolist.constant.StatusEnum;
+import com.xz.app.todolist.pojo.AppInfo;
 import com.xz.app.todolist.pojo.vo.ApiResult;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.xz.app.todolist.pojo.vo.AppUpdateVo;
+import com.xz.app.todolist.service.AppInfoService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +25,9 @@ import java.io.InputStream;
 @RestController
 @RequestMapping("/appinfo")
 public class AppInfoController {
+    @Autowired
+    AppInfoService appInfoService;
+
     /**
      * 获取当前服务器时间
      */
@@ -87,5 +94,23 @@ public class AppInfoController {
             e.printStackTrace();
             // TODO :: [远程主机强迫关闭了一个现有的连接。]... 等异常处理
         }
+    }
+
+
+    @GetMapping("checkUpdate")
+    public Object checkUpdate(@RequestParam String appid,
+                              @RequestParam Integer versionCode) {
+        AppInfo info = appInfoService.findByAppid(appid);
+        if (info == null) {
+            return new ApiResult(StatusEnum.ERROR_APPID_NOTFALL, null);
+        }
+
+        if (versionCode >= info.getVersionCode()) {
+            return new ApiResult(StatusEnum.WORN_UPDATE_VERSION, null);
+        }
+
+        AppUpdateVo updateVo = new AppUpdateVo();
+        BeanUtils.copyProperties(info,updateVo);
+        return new ApiResult(StatusEnum.SUCCESS, updateVo);
     }
 }
