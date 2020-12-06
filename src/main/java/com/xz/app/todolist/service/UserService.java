@@ -15,9 +15,12 @@ import java.util.List;
 public interface UserService {
     ApiResult register(String name, String password, String phone);
 
-    String login(User user, String rsaPwd) throws InvalidKeySpecException, NoSuchAlgorithmException;
+    String login(User user, String rsaPwd,long timestamp) ;
 
     ApiResult logout(String userNo, String token);
+
+    //验证密码
+    boolean validatePwd(User user, String rsaPwd,long timestamp);
 
 
     User findUserNo(String userNo);

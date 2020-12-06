@@ -10,6 +10,8 @@ import com.xz.app.todolist.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * user 控制层
  */
@@ -106,10 +108,10 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public Object login(
-            @RequestParam(value = "account") String account,
-            @RequestParam(value = "password") String password,
-            @RequestParam(value = "type") Integer type) {
+    public Object login(HttpServletRequest request,
+                        @RequestParam(value = "account") String account,
+                        @RequestParam(value = "password") String password,
+                        @RequestParam(value = "type") Integer type) {
 
         User user = null;
         switch (type) {
@@ -145,8 +147,16 @@ public class UserController {
                 return new ApiResult(StatusEnum.ERROR_PARAMS, null);
         }
 
+        long clientTimestamp;
         try {
-            String newToken = userServiceImpl.login(user, password);
+            clientTimestamp = Long.parseLong(request.getHeader("timestamp"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResult(StatusEnum.ERROR_TIMESTAMP_RECEIVE, null);
+        }
+
+        try {
+            String newToken = userServiceImpl.login(user, password,clientTimestamp);
             if (newToken == null) {
                 //密码不正确
                 return new ApiResult(StatusEnum.FAILED_USER_LOGIN, null);

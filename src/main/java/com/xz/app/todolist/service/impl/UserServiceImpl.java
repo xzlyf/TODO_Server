@@ -68,14 +68,11 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional//开启事务，否则执行update/delete时将失败
     @Override
-    public String login(User user, String rsaPwd) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public String login(User user, String rsaPwd, long timestamp) {
 
-        //使用私钥解密密文
-        String pwd = RSAUtil.privateDecrypt(rsaPwd, RSAUtil.getPrivateKey(Local.privateKey));
-        if (!user.getUserPwd().equals(pwd)) {
+        if (!validatePwd(user, rsaPwd,timestamp)) {
             return null;
         }
-
 
         //生成token 参考生成规则
         String token = MD5Util.getMD5(user.getUserNo() + user.getUserPhone() + user.getUserPwd() + Local.token_secret + System.currentTimeMillis());
@@ -107,6 +104,26 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return new ApiResult(StatusEnum.ERROR, e.getMessage());
         }
+    }
+
+    /**
+     * 验证密码
+     *
+     * @return true 正确 false 失败
+     */
+    @Override
+    public boolean validatePwd(User user, String rsaPwd,long timestamp) {
+        //使用私钥解密密文
+        String pwd = null;
+        try {
+            pwd = RSAUtil.privateDecrypt(rsaPwd, RSAUtil.getPrivateKey(Local.privateKey));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            return false;
+        }
+        //明文密码+时间戳
+        String originPwd = user.getUserPwd()+timestamp;
+        return originPwd.equals(pwd);
     }
 
 
@@ -208,7 +225,8 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 更新密码
-     *  @param uuid
+     *
+     * @param uuid
      * @param newUserPwd
      */
     @Transactional//开启事务，否则执行update/delete时将失败
