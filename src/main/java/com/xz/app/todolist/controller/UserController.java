@@ -156,7 +156,7 @@ public class UserController {
         }
 
         try {
-            String newToken = userServiceImpl.login(user, password,clientTimestamp);
+            String newToken = userServiceImpl.login(user, password, clientTimestamp);
             if (newToken == null) {
                 //密码不正确
                 return new ApiResult(StatusEnum.FAILED_USER_LOGIN, null);
@@ -208,15 +208,24 @@ public class UserController {
      * 修改用户密码
      */
     @PostMapping(value = "/alterPwd")
-    public Object alterUserPwd(@RequestParam(value = "token") String token,
-                               @RequestParam(value = "pwd") String pwd) {
+    public Object alterUserPwd(HttpServletRequest request,
+                               @RequestParam(value = "token") String token,
+                               @RequestParam(value = "pwd") String pwd,
+                               @RequestParam(value = "oldPwd") String oldPwd) {
         User user = userServiceImpl.findUserToken(token);
         if (user == null) {
             return new ApiResult(StatusEnum.ERROR_TOKEN, null);
         }
         try {
-            userServiceImpl.alterUserPwd(user.getUuid(), pwd);
-            return new ApiResult(StatusEnum.SUCCESS, null);
+            long timestamp = Long.parseLong(request.getHeader("timestamp"));
+            //验证旧密码
+            if (userServiceImpl.validatePwd(user, oldPwd, timestamp)) {
+                //修改密码
+                userServiceImpl.alterUserPwd(user.getUuid(), pwd);
+                return new ApiResult(StatusEnum.SUCCESS, null);
+            }else{
+                return new ApiResult(StatusEnum.FAILED_USER_OLDPWD, null);
+            }
         } catch (Exception e) {
             return new ApiResult(StatusEnum.FAILED_USER_UPDATE, e.getMessage());
         }

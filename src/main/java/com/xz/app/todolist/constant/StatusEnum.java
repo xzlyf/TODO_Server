@@ -24,7 +24,8 @@ public enum StatusEnum {
     FAILED_EVENT_CREATE(1053,"事件创建失败"),
     FAILED_EVENT_DELETE(1054,"事件删除失败"),
     FAILED_EVENT_NULL(1055,"未找到对应事件"),
-    FAILED_EVENT_UPDATE(1056,"更新事件失败");
+    FAILED_EVENT_UPDATE(1056,"更新事件失败"),
+    FAILED_USER_OLDPWD(1057,"旧密码错误");
 
     /**
      * 响应状态码
