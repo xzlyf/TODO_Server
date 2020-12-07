@@ -227,15 +227,17 @@ public class UserServiceImpl implements UserService {
      * 更新密码
      *
      * @param uuid
-     * @param newUserPwd
+     * @param newUserPwdRSA
      */
     @Transactional//开启事务，否则执行update/delete时将失败
     @Override
-    public void alterUserPwd(String uuid, String newUserPwd) {
+    public void alterUserPwd(String uuid, String newUserPwdRSA,long timestamp) {
         //解密使用公钥加密的密文
         String pwd = null;
         try {
-            pwd = RSAUtil.privateDecrypt(newUserPwd, RSAUtil.getPrivateKey(Local.privateKey));
+            pwd = RSAUtil.privateDecrypt(newUserPwdRSA, RSAUtil.getPrivateKey(Local.privateKey));
+            //删除拼接的时间戳
+            pwd = pwd.replaceAll(String.valueOf(timestamp),"");
         } catch (Exception e) {
             e.printStackTrace();
             return;

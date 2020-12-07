@@ -221,9 +221,9 @@ public class UserController {
             //验证旧密码
             if (userServiceImpl.validatePwd(user, oldPwd, timestamp)) {
                 //修改密码
-                userServiceImpl.alterUserPwd(user.getUuid(), pwd);
+                userServiceImpl.alterUserPwd(user.getUuid(), pwd, timestamp);
                 return new ApiResult(StatusEnum.SUCCESS, null);
-            }else{
+            } else {
                 return new ApiResult(StatusEnum.FAILED_USER_OLDPWD, null);
             }
         } catch (Exception e) {

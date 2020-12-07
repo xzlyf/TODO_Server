@@ -39,6 +39,6 @@ public interface UserService {
 
     void alterUserName(String uuid, String newUserName);
 
-    void alterUserPwd(String uuid, String newUserPwd);
+    void alterUserPwd(String uuid, String newUserPwd,long timestamp);
 
 }
