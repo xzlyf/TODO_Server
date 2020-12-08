@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -43,8 +44,10 @@ public class AppInfoController {
     @RequestMapping("download")
     public void downloadApk(HttpServletRequest request,
                             HttpServletResponse response,
+                            //appRes表所对应的downloadKey
+                            @RequestParam(name = "downloadKey") String downloadKey,
                             // 获取Header里面的Range内容, 可选项, 可为空
-                            @RequestHeader(name = "Range", required = false) String range) {
+                            @RequestParam(name = "range", required = false) String range) {
 
         // 测试用文件
         File file = new File("F:\\WorkSpace\\AppServer\\todolist\\budaolepao.apk");
@@ -97,6 +100,9 @@ public class AppInfoController {
         } catch (IOException e) {
             e.printStackTrace();
             // TODO :: [远程主机强迫关闭了一个现有的连接。]... 等异常处理
+
+            //HttpSession session = request.getSession();
+            //session.invalidate();
         }
     }
 
@@ -114,7 +120,7 @@ public class AppInfoController {
         }
         //查询app历史版本表
         AppRes appRes = appResService.findByAppId(info.getAppid());
-        if (appRes==null){
+        if (appRes == null) {
             return new ApiResult(StatusEnum.WORN_UPDATE_NULL, null);
         }
 

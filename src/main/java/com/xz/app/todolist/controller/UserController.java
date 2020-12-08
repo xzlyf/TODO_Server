@@ -108,7 +108,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public Object login(HttpServletRequest request,
+    public Object login(@RequestHeader(value = "timestamp")Long timestamp,
                         @RequestParam(value = "account") String account,
                         @RequestParam(value = "password") String password,
                         @RequestParam(value = "type") Integer type) {
@@ -147,16 +147,15 @@ public class UserController {
                 return new ApiResult(StatusEnum.ERROR_PARAMS, null);
         }
 
-        long clientTimestamp;
+        //long clientTimestamp;
+        //try {
+        //    clientTimestamp = Long.parseLong(request.getHeader("timestamp"));
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //    return new ApiResult(StatusEnum.ERROR_TIMESTAMP_RECEIVE, null);
+        //}
         try {
-            clientTimestamp = Long.parseLong(request.getHeader("timestamp"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ApiResult(StatusEnum.ERROR_TIMESTAMP_RECEIVE, null);
-        }
-
-        try {
-            String newToken = userServiceImpl.login(user, password, clientTimestamp);
+            String newToken = userServiceImpl.login(user, password, timestamp);
             if (newToken == null) {
                 //密码不正确
                 return new ApiResult(StatusEnum.FAILED_USER_LOGIN, null);
@@ -208,7 +207,7 @@ public class UserController {
      * 修改用户密码
      */
     @PostMapping(value = "/alterPwd")
-    public Object alterUserPwd(HttpServletRequest request,
+    public Object alterUserPwd(@RequestHeader(value = "timestamp")Long timestamp,
                                @RequestParam(value = "token") String token,
                                @RequestParam(value = "pwd") String pwd,
                                @RequestParam(value = "oldPwd") String oldPwd) {
@@ -217,7 +216,6 @@ public class UserController {
             return new ApiResult(StatusEnum.ERROR_TOKEN, null);
         }
         try {
-            long timestamp = Long.parseLong(request.getHeader("timestamp"));
             //验证旧密码
             if (userServiceImpl.validatePwd(user, oldPwd, timestamp)) {
                 //修改密码
