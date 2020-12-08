@@ -16,12 +16,6 @@ public class AppInfoServiceImpl implements AppInfoService {
     AppInfoRepository appInfoRepository;
 
     @Override
-    public boolean checkUpdate(String appid, int version) {
-
-        return false;
-    }
-
-    @Override
     public AppInfo findByAppid(String appid) {
         return appInfoRepository.findByAppid(appid);
     }

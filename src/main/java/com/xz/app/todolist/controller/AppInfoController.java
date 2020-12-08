@@ -3,9 +3,11 @@ package com.xz.app.todolist.controller;
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.xz.app.todolist.constant.StatusEnum;
 import com.xz.app.todolist.pojo.AppInfo;
+import com.xz.app.todolist.pojo.AppRes;
 import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.AppUpdateVo;
 import com.xz.app.todolist.service.AppInfoService;
+import com.xz.app.todolist.service.AppResService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ import java.io.InputStream;
 public class AppInfoController {
     @Autowired
     AppInfoService appInfoService;
+    @Autowired
+    AppResService appResService;
 
     /**
      * 获取当前服务器时间
@@ -43,7 +47,7 @@ public class AppInfoController {
                             @RequestHeader(name = "Range", required = false) String range) {
 
         // 测试用文件
-        File file = new File("F:\\WorkSpace\\AppServer\\budaolepao.apk");
+        File file = new File("F:\\WorkSpace\\AppServer\\todolist\\budaolepao.apk");
 
         // 设置Content-Type, 此处可以参考void org.apache.catalina.startup.Tomcat.addDefaultMimeTypeMappings(Context context)
         // 采用的是扩展名判断Content-Type, 内容可以参考org.apache.catalina.startup.MimeTypeMappings.properties
@@ -108,9 +112,14 @@ public class AppInfoController {
         if (versionCode >= info.getVersionCode()) {
             return new ApiResult(StatusEnum.WORN_UPDATE_VERSION, null);
         }
+        //查询app历史版本表
+        AppRes appRes = appResService.findByAppId(info.getAppid());
+        if (appRes==null){
+            return new ApiResult(StatusEnum.WORN_UPDATE_NULL, null);
+        }
 
         AppUpdateVo updateVo = new AppUpdateVo();
-        BeanUtils.copyProperties(info,updateVo);
+        BeanUtils.copyProperties(appRes, updateVo);
         return new ApiResult(StatusEnum.SUCCESS, updateVo);
     }
 }

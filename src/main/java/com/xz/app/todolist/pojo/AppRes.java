@@ -5,7 +5,6 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,23 +13,32 @@ import java.util.Date;
 
 /**
  * @Author: xz
- * @Date: 2020/12/4
+ * @Date: 2020/12/8
  */
 @Entity
 @Data
 @DynamicUpdate
-@Table(name = "app_info")
+@Table(name = "app_res")
 @EntityListeners(AuditingEntityListener.class)
-public class AppInfo {
+public class AppRes {
 
     @Id
     @GenericGenerator(name = "system-uuid", strategy = "uuid") //这个是hibernate的注解/生成32位UUID
     @GeneratedValue(generator = "system-uuid")
-    @Column(name = "id", length = 32)
-    private String id;
+    @Column(name = "download_key", length = 32)
+    private String downloadKey;
 
-    @Column(name = "app_id", length = 64, unique = true, nullable = true)
-    private String appid;
+    @Column(name = "app_id", length = 64, unique = true)
+    private String appId;
+
+    @Column(name = "md5", length = 64)
+    private String md5;
+
+    @Column(name = "file_length")
+    private Long fileLength;
+
+    @Column(name = "path", length = 512)
+    private String path;
 
     @Column(name = "app_name", length = 64)
     private String appName;
@@ -39,16 +47,11 @@ public class AppInfo {
     private String versionName;
 
     @Column(name = "version_code")
-    private int versionCode;
+    private Integer versionCode;
 
     @Column(name = "update_msg", length = 1024)
     private String updateMsg;
 
-    @Column(name = "close", columnDefinition = "boolean default false")
-    private Boolean isClose;
-
-    @Column(name = "close_msg", length = 1024)
-    private String closeMsg;
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -9,8 +9,11 @@ import lombok.Data;
 @Data
 public class AppUpdateVo {
 
-    private int versionCode;
+    private Integer versionCode;
     private String versionName;
     private String updateMsg;
+    private String downloadKey;
+    private String md5;
+    private String fileLength;
 
 }

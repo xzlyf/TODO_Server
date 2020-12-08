@@ -1,4 +1,7 @@
 spring:
+  jackson:
+    #json不返回null的属性
+    default-property-inclusion: non_null
   profiles:
     active: dev
   datasource:

@@ -9,8 +9,6 @@ import com.xz.app.todolist.pojo.AppInfo;
 public interface AppInfoService {
 
 
-    boolean checkUpdate(String appid,int version);
-
     AppInfo findByAppid(String appid);
 
 
