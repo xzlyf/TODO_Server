@@ -48,9 +48,19 @@ public class AppInfoController {
                             @RequestParam(name = "downloadKey") String downloadKey,
                             // 获取Header里面的Range内容, 可选项, 可为空
                             @RequestParam(name = "range", required = false) String range) {
+        AppRes appRes = appResService.findByDownloadKey(downloadKey);
+        if (appRes==null){
+            //找不到对应的downloadKey下载文件
+            return;
+        }
 
         // 测试用文件
-        File file = new File("F:\\WorkSpace\\AppServer\\todolist\\budaolepao.apk");
+        //File file = new File("F:\\WorkSpace\\AppServer\\todolist\\budaolepao.apk");
+        File file = new File(appRes.getPath());
+        if (!file.exists()){
+            //找不到文件
+            return;
+        }
 
         // 设置Content-Type, 此处可以参考void org.apache.catalina.startup.Tomcat.addDefaultMimeTypeMappings(Context context)
         // 采用的是扩展名判断Content-Type, 内容可以参考org.apache.catalina.startup.MimeTypeMappings.properties
@@ -59,6 +69,9 @@ public class AppInfoController {
         // 自定义文件名
         response.setHeader("Content-Disposition", String.format("attachment; filename=%s", file.getName()));
         response.setHeader("Accept-Ranges", "bytes");
+        response.setHeader("File-length",String.valueOf(appRes.getFileLength()));
+        response.setHeader("File-MD5",appRes.getMd5());
+
 
 
         try (

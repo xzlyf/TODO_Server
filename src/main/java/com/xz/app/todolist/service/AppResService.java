@@ -7,5 +7,7 @@ import com.xz.app.todolist.pojo.AppRes;
  * @Date: 2020/12/8
  */
 public interface AppResService {
+    AppRes findByDownloadKey(String downloadKey);
+
     AppRes findByAppId(String appId);
 }

@@ -8,5 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @Date: 2020/12/8
  */
 public interface AppResRepository extends JpaRepository<AppRes, Long> {
+    AppRes findByDownloadKey(String downloadKey);
+
     AppRes findByAppId(String appId);
 }

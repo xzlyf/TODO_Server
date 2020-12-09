@@ -15,6 +15,12 @@ public class AppResServiceImpl implements AppResService {
     @Autowired
     AppResRepository appResRepository;
 
+
+    @Override
+    public AppRes findByDownloadKey(String downloadKey) {
+        return appResRepository.findByDownloadKey(downloadKey);
+    }
+
     @Override
     public AppRes findByAppId(String appId) {
         return appResRepository.findByAppId(appId);
