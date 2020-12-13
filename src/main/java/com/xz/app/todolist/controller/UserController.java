@@ -45,7 +45,7 @@ public class UserController {
      * @param userNo
      * @return
      */
-    @RequestMapping("")
+    @RequestMapping("/")
     public Object getUser(@RequestParam("userno") String userNo) {
         User user = userServiceImpl.findUserNo(userNo);
         if (user == null) {
@@ -61,7 +61,7 @@ public class UserController {
      * @param userName
      * @return
      */
-    @RequestMapping(value = "", params = {"username"})
+    @RequestMapping(value = "/", params = {"username"})
     public Object checkUserName(@RequestParam(value = "username") String userName) {
         User user = userServiceImpl.findUserName(userName);
         if (user == null) {

@@ -36,12 +36,12 @@ public class AppInfoController {
     /**
      * 获取当前服务器时间
      */
-    @RequestMapping("now")
+    @RequestMapping("/now")
     public Object getNow() {
         return new ApiResult(StatusEnum.SUCCESS, System.currentTimeMillis());
     }
 
-    @RequestMapping("download")
+    @RequestMapping("/download")
     public void downloadApk(HttpServletRequest request,
                             HttpServletResponse response,
                             //appRes表所对应的downloadKey
@@ -120,7 +120,7 @@ public class AppInfoController {
     }
 
 
-    @GetMapping("checkUpdate")
+    @GetMapping("/checkUpdate")
     public Object checkUpdate(@RequestParam String appid,
                               @RequestParam Integer versionCode) {
         AppInfo info = appInfoService.findByAppid(appid);

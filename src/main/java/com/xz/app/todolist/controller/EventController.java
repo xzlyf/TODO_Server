@@ -26,7 +26,7 @@ public class EventController {
     /**
      * 创建事件
      */
-    @PostMapping(value = "createEvent", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/createEvent", produces = "application/json;charset=UTF-8")
     public Object createEvent(@RequestBody CreateEvent event,
                               @RequestParam String token) {
 
@@ -50,7 +50,7 @@ public class EventController {
      *
      * @param id 事件id
      */
-    @GetMapping(value = "deleteEvent")
+    @GetMapping(value = "/deleteEvent")
     public Object deleteEvent(@RequestParam String id,
                               @RequestParam String token) {
         User user = userServiceImpl.findUserToken(token);
@@ -73,7 +73,7 @@ public class EventController {
     /**
      * 更新事件
      */
-    @PostMapping(value = "updateEvent", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/updateEvent", produces = "application/json;charset=UTF-8")
     public Object updateEvent(@RequestBody CreateEvent event,
                               @RequestParam String token,
                               @RequestParam String id) {
@@ -95,7 +95,7 @@ public class EventController {
     /**
      * 更新事件状态
      */
-    @GetMapping(value = "setStatus")
+    @GetMapping(value = "/setStatus")
     public Object setStatus(@RequestParam Boolean status,
                             @RequestParam String token,
                             @RequestParam String id) {
@@ -117,7 +117,7 @@ public class EventController {
      * 指定一个用户查询所有事件
      * 分页查询
      */
-    @GetMapping(value = "getAllEvent")
+    @GetMapping(value = "/getAllEvent")
     public Object getAllEvent(@RequestParam Integer page,
                               @RequestParam Integer size,
                               @RequestParam String token) {
