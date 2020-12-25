@@ -21,7 +21,7 @@ public class DefaultMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(signInterceptor)
-                //.addPathPatterns("/**")
+                //.addPathPatterns("/**")//所有接口
                 .addPathPatterns("/user/*")//拦截接口
                 .addPathPatterns("/todolist/*");//拦截接口
                 //.excludePathPatterns("/user/now") //排除部分开放接口

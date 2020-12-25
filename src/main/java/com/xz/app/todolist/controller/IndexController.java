@@ -16,6 +16,6 @@ public class IndexController {
     @RequestMapping("/")
     public Object index() {
         //待完成 - 开启spring boot 页面跳转 关键字spring mvc
-        return new ApiResult(StatusEnum.SUCCESS, "主页测试");
+        return new ApiResult(StatusEnum.SUCCESS, "主页测试", String.valueOf(System.currentTimeMillis()));
     }
 }
