@@ -88,17 +88,15 @@ public class UserController {
 
     /**
      * 注册用户
-     *
-     * @param name
+     * 手机注册
      * @param password
      * @param phone
      * @return
      */
-    @RequestMapping(value = "/registerUser", params = {"username", "password", "phone"})
-    public Object registerUser(@RequestParam(value = "username") String name,
-                               @RequestParam(value = "password") String password,
+    @RequestMapping(value = "/registerUser", params = {"password", "phone"})
+    public Object registerUser(@RequestParam(value = "password") String password,
                                @RequestParam(value = "phone") String phone) {
-        return userServiceImpl.register(name, password, phone);
+        return userServiceImpl.register(password, phone);
     }
 
     /**
@@ -108,7 +106,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public Object login(@RequestHeader(value = "timestamp")Long timestamp,
+    public Object login(@RequestHeader(value = "timestamp") Long timestamp,
                         @RequestParam(value = "account") String account,
                         @RequestParam(value = "password") String password,
                         @RequestParam(value = "type") Integer type) {
@@ -207,7 +205,7 @@ public class UserController {
      * 修改用户密码
      */
     @PostMapping(value = "/alterPwd")
-    public Object alterUserPwd(@RequestHeader(value = "timestamp")Long timestamp,
+    public Object alterUserPwd(@RequestHeader(value = "timestamp") Long timestamp,
                                @RequestParam(value = "token") String token,
                                @RequestParam(value = "pwd") String pwd,
                                @RequestParam(value = "oldPwd") String oldPwd) {

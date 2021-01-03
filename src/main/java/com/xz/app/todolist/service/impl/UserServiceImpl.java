@@ -33,16 +33,17 @@ public class UserServiceImpl implements UserService {
      * 注册接口
      */
     @Override
-    public ApiResult register(String name, String password, String phone) {
+    public ApiResult register(String password, String phone) {
         User user = new User();
-        user.setUserName(name);
+        //指定默认用户名  格式= 手机用户+phone
+        user.setUserName("手机用户" + phone);
         user.setUserPwd(password);
         user.setUserPhone(phone);
 
         User checkAgain = findUserPhone(phone);
         //手机号存在
         if (checkAgain != null) {
-            return new ApiResult(StatusEnum.FAILED_USER_EXIST, new UserPublicDataVO(checkAgain.getUserName(), checkAgain.getUserNo()));
+            return new ApiResult(StatusEnum.FAILED_USER_EXIST, null);
         }
         //生成账号，并查询数据库是否存在此账号，如果存在则重新生成账号
         String tempAccount;
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(User user, String rsaPwd, long timestamp) {
 
-        if (!validatePwd(user, rsaPwd,timestamp)) {
+        if (!validatePwd(user, rsaPwd, timestamp)) {
             return null;
         }
 
@@ -112,7 +113,7 @@ public class UserServiceImpl implements UserService {
      * @return true 正确 false 失败
      */
     @Override
-    public boolean validatePwd(User user, String rsaPwd,long timestamp) {
+    public boolean validatePwd(User user, String rsaPwd, long timestamp) {
         //使用私钥解密密文
         String pwd = null;
         try {
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         //明文密码+时间戳
-        String originPwd = user.getUserPwd()+timestamp;
+        String originPwd = user.getUserPwd() + timestamp;
         return originPwd.equals(pwd);
     }
 
@@ -231,13 +232,13 @@ public class UserServiceImpl implements UserService {
      */
     @Transactional//开启事务，否则执行update/delete时将失败
     @Override
-    public void alterUserPwd(String uuid, String newUserPwdRSA,long timestamp) {
+    public void alterUserPwd(String uuid, String newUserPwdRSA, long timestamp) {
         //解密使用公钥加密的密文
         String pwd = null;
         try {
             pwd = RSAUtil.privateDecrypt(newUserPwdRSA, RSAUtil.getPrivateKey(Local.privateKey));
             //删除拼接的时间戳
-            pwd = pwd.replaceAll(String.valueOf(timestamp),"");
+            pwd = pwd.replaceAll(String.valueOf(timestamp), "");
         } catch (Exception e) {
             e.printStackTrace();
             return;

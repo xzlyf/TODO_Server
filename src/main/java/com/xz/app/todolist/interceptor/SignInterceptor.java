@@ -64,9 +64,14 @@ public class SignInterceptor implements HandlerInterceptor {
             return false;
         }
 
+
         //开始校验签名  参考验参规则
         String origin;
         origin = MD5Util.getMD5(appId + Local.client_secret + timestampStr + Local.version);
+        System.out.println("timestamp------->"+timestamp);
+        System.out.println("appId    ------->"+appId);
+        System.out.println("sign     ------->"+sign);
+        System.out.println("originSign------>"+origin);
         assert origin != null;
         if (!origin.equalsIgnoreCase(sign)) {
             ServletUtil.renderString(response, JSON.toJSONString(new ApiResult(StatusEnum.ERROR_SIGN, null)));

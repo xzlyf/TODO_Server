@@ -13,7 +13,7 @@ import java.util.List;
  * @Date: 2020/11/22
  */
 public interface UserService {
-    ApiResult register(String name, String password, String phone);
+    ApiResult register( String password, String phone);
 
     String login(User user, String rsaPwd,long timestamp) ;
 
