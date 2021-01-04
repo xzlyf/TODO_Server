@@ -12,6 +12,7 @@ public enum StatusEnum {
     ERROR_TIMESTAMP_RECEIVE(7, "时间戳不合法"),
     ERROR_APPID_NULL(8, "缺失AppId参数"),
     ERROR_APPID_NOTFALL(9, "AppId不存在"),
+    ERROR_SECRET(10, "密钥无效"),
     WORN_UPDATE_VERSION(66, "当前已是最新版本"),
     WORN_UPDATE_NULL(67, "更新文件错误"),
     NULL_USER(1045, "用户不存在"),
