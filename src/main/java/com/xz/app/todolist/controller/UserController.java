@@ -89,6 +89,7 @@ public class UserController {
     /**
      * 注册用户
      * 手机注册
+     *
      * @param password
      * @param phone
      * @return
@@ -105,7 +106,7 @@ public class UserController {
      * @param type 1-手机登录  2-账号登录 3-token登录
      * @return
      */
-    @PostMapping(value = "/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Object login(@RequestHeader(value = "timestamp") Long timestamp,
                         @RequestParam(value = "account") String account,
                         @RequestParam(value = "password") String password,

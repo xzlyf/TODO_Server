@@ -35,18 +35,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResult register(String password, String phone) {
         //解密RSA
-        //String rsaPwd;
-        //try {
-        //    rsaPwd = RSAUtil.privateDecrypt(password, RSAUtil.getPrivateKey(Local.privateKey));
-        //} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-        //    e.printStackTrace();
-        //    return new ApiResult(StatusEnum.ERROR_SECRET, null);
-        //}
+        String rsaPwd;
+        try {
+            rsaPwd = RSAUtil.privateDecrypt(password, RSAUtil.getPrivateKey(Local.privateKey));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            return new ApiResult(StatusEnum.ERROR_SECRET, null);
+        }
 
         User user = new User();
         //指定默认用户名  格式= 手机用户+phone
         user.setUserName("手机用户" + phone);
-        user.setUserPwd(password);
+        user.setUserPwd(rsaPwd);
         user.setUserPhone(phone);
 
         User checkAgain = findUserPhone(phone);

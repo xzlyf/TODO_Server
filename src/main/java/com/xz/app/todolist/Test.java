@@ -10,6 +10,8 @@ import org.springframework.beans.BeanUtils;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: xz
@@ -58,11 +60,26 @@ public class Test {
         //
         //System.out.println("ss="+(t*10)%10);
 
-        String rsaSt = "N7s3d8QJiFHACs0QNdPhuXMZ4CY_TBwD-PAa2utqZn1inemHTI_RXas7ZOU-RMNR4aHYxF6OcRfGoGOabQY4DPW8qme_o4qwP9d46tYoonedAfdujBK65kuUed9msVpC-NYKtLjPJkuBMpx3ntz5k_UiqPv40cqcuqXC13LWPT8";
-        String rsaSt2 = "HuYlefpBc2E-_t-hlxKfxNjQmLrmgoME_K6nXY07RJHcU_oDoMEH_lNWhiqMXm8UmK0Jh5V5GkNO1BoI1CUFGY_nCZF-53q7l1b4KZ47XzbxkZxHID3xNm4v3uLoykry2n6N7xnEg9i_nGrZt75RuLnOGSJtr4vqbxQ6tUEGbLw";
-        String rsaSt3 = "pTFVnr-8JNyN55z8TF7rDZifGzWknXdPLTKZoLmsM63nAywgpFoAMbhcPXFmAc9mos0ipLIUglL3lGk9eOBypPEouTSVSZ0xB7x-nWARPaVsLEROI846lNbMXEH9BUcalSEIs5DhddqLNFXjmP_AL_qYMP9enz90jG2DipWozB8";
-        String st = RSAUtil.privateDecrypt(rsaSt3,RSAUtil.getPrivateKey(Local.privateKey));
-        //String st = RSAUtil.publicEncrypt("123321",RSAUtil.getPublicKey(Local.publicKey));
-        System.out.println(st);
+        //String rsaSt = "N7s3d8QJiFHACs0QNdPhuXMZ4CY_TBwD-PAa2utqZn1inemHTI_RXas7ZOU-RMNR4aHYxF6OcRfGoGOabQY4DPW8qme_o4qwP9d46tYoonedAfdujBK65kuUed9msVpC-NYKtLjPJkuBMpx3ntz5k_UiqPv40cqcuqXC13LWPT8";
+        //String rsaSt2 = "HuYlefpBc2E-_t-hlxKfxNjQmLrmgoME_K6nXY07RJHcU_oDoMEH_lNWhiqMXm8UmK0Jh5V5GkNO1BoI1CUFGY_nCZF-53q7l1b4KZ47XzbxkZxHID3xNm4v3uLoykry2n6N7xnEg9i_nGrZt75RuLnOGSJtr4vqbxQ6tUEGbLw";
+        //String rsaSt3 = "pTFVnr-8JNyN55z8TF7rDZifGzWknXdPLTKZoLmsM63nAywgpFoAMbhcPXFmAc9mos0ipLIUglL3lGk9eOBypPEouTSVSZ0xB7x-nWARPaVsLEROI846lNbMXEH9BUcalSEIs5DhddqLNFXjmP_AL_qYMP9enz90jG2DipWozB8";
+        //String st = RSAUtil.privateDecrypt(rsaSt3,RSAUtil.getPrivateKey(Local.privateKey));
+        ////String st = RSAUtil.publicEncrypt("123321",RSAUtil.getPublicKey(Local.publicKey));
+        //System.out.println(st);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("A",1);
+        params.put("B","文本");
+        params.put("C",true);
+        params.put("d",true);
+        params.put("e",false);
+        params.put("f",12323);
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String mapKey = entry.getKey();
+            String mapValue = entry.getValue().toString();
+            System.out.println(mapKey+":"+mapValue);
+        }
+
     }
 }
