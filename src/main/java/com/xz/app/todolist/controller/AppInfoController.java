@@ -10,6 +10,7 @@ import com.xz.app.todolist.service.AppInfoService;
 import com.xz.app.todolist.service.AppResService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletOutputStream;
@@ -154,17 +155,5 @@ public class AppInfoController {
         return new ApiResult(StatusEnum.SUCCESS, updateVo);
     }
 
-    /**
-     * app使用条例
-     *
-     * @param appid app对应的AppId
-     */
-    @GetMapping("/")
-    public Object userRules(@RequestParam String appid) {
-        AppInfo appRes = appInfoService.findByAppid(appid);
-        if (appRes == null) {
-            return new ApiResult(StatusEnum.ERROR_APPID_NOTFALL, null);
-        }
-        return null;
-    }
+
 }
