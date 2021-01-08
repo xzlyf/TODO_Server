@@ -41,6 +41,12 @@ public class AppInfoController {
         return new ApiResult(StatusEnum.SUCCESS, System.currentTimeMillis());
     }
 
+    /**
+     * 下载服务
+     *
+     * @param downloadKey 下载对应的key
+     * @param range       已下载的字节 可为空
+     */
     @RequestMapping("/download")
     public void downloadApk(HttpServletRequest request,
                             HttpServletResponse response,
@@ -49,7 +55,7 @@ public class AppInfoController {
                             // 获取Header里面的Range内容, 可选项, 可为空
                             @RequestParam(name = "range", required = false) String range) {
         AppRes appRes = appResService.findByDownloadKey(downloadKey);
-        if (appRes==null){
+        if (appRes == null) {
             //找不到对应的downloadKey下载文件
             return;
         }
@@ -57,7 +63,7 @@ public class AppInfoController {
         // 测试用文件
         //File file = new File("F:\\WorkSpace\\AppServer\\todolist\\budaolepao.apk");
         File file = new File(appRes.getPath());
-        if (!file.exists()){
+        if (!file.exists()) {
             //找不到文件
             return;
         }
@@ -69,16 +75,15 @@ public class AppInfoController {
         // 自定义文件名
         response.setHeader("Content-Disposition", String.format("attachment; filename=%s", file.getName()));
         response.setHeader("Accept-Ranges", "bytes");
-        response.setHeader("File-length",String.valueOf(appRes.getFileLength()));
-        response.setHeader("File-MD5",appRes.getMd5());
-
+        response.setHeader("File-length", String.valueOf(appRes.getFileLength()));
+        response.setHeader("File-MD5", appRes.getMd5());
 
 
         try (
                 // 获取Response输出流
                 ServletOutputStream out = response.getOutputStream();
                 // 测试用文件出入流
-                InputStream fis = new FileInputStream(file);) {
+                InputStream fis = new FileInputStream(file)) {
             // fis.available()可以获取有限数据流总大小, 但available()返回的是int类型, 适用于小于2 G的文件
             // file.length()可以获取文件大小, 返回的是long类型, 适用于小于8.4215048E7 P的文件
             long length = file.length(); // 获取数据流总大小
@@ -120,6 +125,13 @@ public class AppInfoController {
     }
 
 
+    /**
+     * 检查更新
+     *
+     * @param appid       appId
+     * @param versionCode app当前的版本
+     * @return
+     */
     @GetMapping("/checkUpdate")
     public Object checkUpdate(@RequestParam String appid,
                               @RequestParam Integer versionCode) {
@@ -140,5 +152,19 @@ public class AppInfoController {
         AppUpdateVo updateVo = new AppUpdateVo();
         BeanUtils.copyProperties(appRes, updateVo);
         return new ApiResult(StatusEnum.SUCCESS, updateVo);
+    }
+
+    /**
+     * app使用条例
+     *
+     * @param appid app对应的AppId
+     */
+    @GetMapping("/")
+    public Object userRules(@RequestParam String appid) {
+        AppInfo appRes = appInfoService.findByAppid(appid);
+        if (appRes == null) {
+            return new ApiResult(StatusEnum.ERROR_APPID_NOTFALL, null);
+        }
+        return null;
     }
 }

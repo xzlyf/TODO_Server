@@ -50,6 +50,10 @@ public class AppInfo {
     @Column(name = "close_msg", length = 1024)
     private String closeMsg;
 
+
+    @Column(name = "user_rules", length = 215)
+    private String userRules;
+
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
