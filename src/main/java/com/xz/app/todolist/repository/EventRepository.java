@@ -50,4 +50,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     @Query("select e from Event e where e.author.uuid=?1")
     Page<Event> findByUuid(String uuid, Pageable pageable);
 
+    @Query("select e from Event e where e.author.uuid=?1 and e.done = ?2")
+    Page<Event> findDoneEvent(String uuid, Boolean done, Pageable pageable);
+
 }

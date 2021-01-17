@@ -101,6 +101,13 @@ public class EventServiceImpl implements EventService {
         //return eventRepository.findAll(specification, pageable);
 
         //方法三：自定义repo分页查询
-        return eventRepository.findByUuid(uuid,pageable);
+        return eventRepository.findByUuid(uuid, pageable);
+    }
+
+    @Override
+    public Page<Event> getDoneEvent(Integer page, Integer size, String uuid, Boolean isDone) {
+        Sort sort = Sort.by(Sort.Order.desc("createTime"));//根据createTime字段降序排列
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+        return eventRepository.findDoneEvent(uuid, isDone, pageable);
     }
 }

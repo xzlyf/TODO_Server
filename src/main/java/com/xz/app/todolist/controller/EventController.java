@@ -133,4 +133,27 @@ public class EventController {
         }
     }
 
+    /**
+     * 获取 完成事件或未完成事件
+     * 支持分页查询
+     *
+     * @param token  用户token
+     * @param done true 完成 未完成
+     */
+    @GetMapping(value = "/getDoneEvent")
+    public Object getDoneEvent(@RequestParam Integer page,
+                               @RequestParam Integer size,
+                               @RequestParam String token,
+                               @RequestParam Boolean done) {
+        User user = userServiceImpl.findUserToken(token);
+        if (user == null) {
+            return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+        }
+        try {
+            return new PagingResult<>(StatusEnum.SUCCESS, eventService.getDoneEvent(page, size, user.getUuid(), done));
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.ERROR, e.getMessage());
+        }
+    }
+
 }

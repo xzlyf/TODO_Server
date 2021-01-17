@@ -24,7 +24,9 @@ public interface EventService {
     boolean updateStatus(boolean isDone, String uuid, String id);
 
     //获取一个用户所有的事件
-    Page<Event> getUserAllEvent(Integer page, Integer size,String uuid);
+    Page<Event> getUserAllEvent(Integer page, Integer size, String uuid);
 
+
+    Page<Event> getDoneEvent(Integer page, Integer size, String uuid, Boolean isDone);
 
 }
