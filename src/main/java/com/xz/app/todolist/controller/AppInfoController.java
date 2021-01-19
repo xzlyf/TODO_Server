@@ -155,5 +155,15 @@ public class AppInfoController {
         return new ApiResult(StatusEnum.SUCCESS, updateVo);
     }
 
+    @GetMapping("/getUserRules")
+    public Object getUserRules(@RequestParam String appid) {
+        AppInfo info = appInfoService.findByAppid(appid);
+        if (info == null) {
+            return new ApiResult(StatusEnum.ERROR_APPID_NOTFALL, null);
+        }
+        AppInfo appInfo = appInfoService.findByAppid(appid);
+        return new ApiResult(StatusEnum.SUCCESS,appInfo.getUserRules());
+    }
+
 
 }

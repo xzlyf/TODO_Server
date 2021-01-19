@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             //数据插入失败，可能存在相同项
             System.out.println("=========error==========:" + e.getMessage());
-            return new ApiResult(StatusEnum.ERROR, null, e.getMessage());
+            return new ApiResult(StatusEnum.ERROR, e.getMessage());
         }
     }
 
