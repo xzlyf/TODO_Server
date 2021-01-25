@@ -29,7 +29,7 @@ public interface UserService {
 
     User findUserPhone(String phone);
 
-    User findUserToken(String token);
+    User findUserToken(String account);
 
     User findUUID(String uuid);
 

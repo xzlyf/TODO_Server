@@ -1,5 +1,6 @@
 package com.xz.app.todolist.controller;
 
+import com.xz.app.todolist.constant.Local;
 import com.xz.app.todolist.constant.StatusEnum;
 import com.xz.app.todolist.pojo.User;
 import com.xz.app.todolist.pojo.UserDetail;
@@ -7,10 +8,12 @@ import com.xz.app.todolist.pojo.vo.ApiResult;
 import com.xz.app.todolist.pojo.vo.PagingResult;
 import com.xz.app.todolist.service.impl.DetailServiceImpl;
 import com.xz.app.todolist.service.impl.UserServiceImpl;
+import com.xz.app.todolist.utils.RSAUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 /**
  * user 控制层
@@ -129,17 +132,27 @@ public class UserController {
                 }
                 break;
             case 3:
-                //token登录 登录账号默认使用的是手机号
-                user = userServiceImpl.findUserToken(account);
+                //token登录 手机号+token
+                user = userServiceImpl.findUserPhone(account);
                 if (user == null) {
                     return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
                 }
-                if (!password.equalsIgnoreCase(user.getToken())) {
+                //使用私钥解密密文
+                String rsToken = null;
+                try {
+                    rsToken = RSAUtil.privateDecrypt(password, RSAUtil.getPrivateKey(Local.privateKey));
+                } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                    e.printStackTrace();
+                    return new ApiResult(StatusEnum.ERROR, null);
+                }
+                //解密后的token
+                String finalToken = rsToken.replaceAll(String.valueOf(timestamp), "");
+                if (!finalToken.equalsIgnoreCase(user.getToken())) {
                     //token过期
                     return new ApiResult(StatusEnum.ERROR_TOKEN, null);
                 } else {
-                    //未过期
-                    return new ApiResult(StatusEnum.SUCCESS, password);
+                    //未过期  使用token登录不生成新的token
+                    return new ApiResult(StatusEnum.SUCCESS, finalToken);
                 }
             default:
                 //参数错误

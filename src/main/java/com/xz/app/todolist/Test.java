@@ -67,19 +67,24 @@ public class Test {
         ////String st = RSAUtil.publicEncrypt("123321",RSAUtil.getPublicKey(Local.publicKey));
         //System.out.println(st);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("A",1);
-        params.put("B","文本");
-        params.put("C",true);
-        params.put("d",true);
-        params.put("e",false);
-        params.put("f",12323);
+        //Map<String, Object> params = new HashMap<>();
+        //params.put("A",1);
+        //params.put("B","文本");
+        //params.put("C",true);
+        //params.put("d",true);
+        //params.put("e",false);
+        //params.put("f",12323);
+        //
+        //for (Map.Entry<String, Object> entry : params.entrySet()) {
+        //    String mapKey = entry.getKey();
+        //    String mapValue = entry.getValue().toString();
+        //    System.out.println(mapKey+":"+mapValue);
+        //}
 
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            String mapKey = entry.getKey();
-            String mapValue = entry.getValue().toString();
-            System.out.println(mapKey+":"+mapValue);
-        }
+        String st = "AABBCC12138";
+        String sm = "12138";
+        st.replaceAll(sm,"");
+        System.out.println(st.replaceAll(sm,""));
 
     }
 }
