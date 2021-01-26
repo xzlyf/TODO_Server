@@ -189,7 +189,21 @@ public class UserController {
     @GetMapping(value = "/logout")
     public Object logout(@RequestParam(value = "userNo") String userNo,
                          @RequestParam(value = "token") String token) {
-        return userServiceImpl.logout(userNo, token);
+        User user;
+        try {
+            //账号登录
+            user = userServiceImpl.findByUserPhoneOrUserNo(userNo);
+            if (user == null) {
+                return new ApiResult(StatusEnum.FAILED_USER_LOGIN_NO_USER_NO, null);
+            }
+            if (!token.equals(user.getToken())) {
+                return new ApiResult(StatusEnum.ERROR_TOKEN, null);
+            }
+            userServiceImpl.updateStateByToken(user.getUuid(), null);
+            return new ApiResult(StatusEnum.SUCCESS, null);
+        } catch (Exception e) {
+            return new ApiResult(StatusEnum.ERROR, e.getMessage());
+        }
     }
 
     /**

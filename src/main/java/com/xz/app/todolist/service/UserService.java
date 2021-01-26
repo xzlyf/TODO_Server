@@ -17,7 +17,7 @@ public interface UserService {
 
     String login(User user, String rsaPwd,long timestamp) ;
 
-    ApiResult logout(String userNo, String token);
+    User findByUserPhoneOrUserNo(String userNo);
 
     //验证密码
     boolean validatePwd(User user, String rsaPwd,long timestamp);
@@ -40,5 +40,7 @@ public interface UserService {
     void alterUserName(String uuid, String newUserName);
 
     void alterUserPwd(String uuid, String newUserPwd,long timestamp);
+
+    void updateStateByToken(String uuid,String token);
 
 }
