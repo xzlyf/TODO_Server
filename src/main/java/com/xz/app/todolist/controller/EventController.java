@@ -34,6 +34,9 @@ public class EventController {
         if (user == null) {
             return new ApiResult(StatusEnum.ERROR_TOKEN, null);
         }
+        if (event == null) {
+            return new ApiResult(StatusEnum.FAILED_NULL_PARAMS, null);
+        }
 
         try {
             String eventId = eventService.createEvent(event, user);
@@ -137,8 +140,8 @@ public class EventController {
      * 获取 完成事件或未完成事件
      * 支持分页查询
      *
-     * @param token  用户token
-     * @param done true 完成 未完成
+     * @param token 用户token
+     * @param done  true 完成 未完成
      */
     @GetMapping(value = "/getDoneEvent")
     public Object getDoneEvent(@RequestParam Integer page,

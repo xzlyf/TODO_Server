@@ -14,6 +14,7 @@ public enum StatusEnum {
     ERROR_APPID_NOTFALL(9, "AppId不存在"),
     ERROR_SECRET(10, "密钥无效"),
     ERROR_PARAMS(11, "参数错误"),
+    FAILED_NULL_PARAMS(12, "缺失重要参数"),
     WORN_UPDATE_VERSION(66, "当前已是最新版本"),
     WORN_UPDATE_NULL(67, "更新文件错误"),
     NULL_USER(1045, "用户不存在"),
