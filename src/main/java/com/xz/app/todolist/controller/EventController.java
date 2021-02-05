@@ -51,6 +51,7 @@ public class EventController {
     /**
      * 删除事件
      *
+     *
      * @param id 事件id
      */
     @GetMapping(value = "/deleteEvent")
